@@ -7,30 +7,24 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.dashboard.view.HomeFragment;
 import com.example.foodplanner.databinding.ActivityMainBinding;
 import com.example.foodplanner.favorites.FavoriteFragment;
-import com.example.foodplanner.main_activity.MainActivityInterface;
-import com.example.foodplanner.main_activity.presenter.MainActivityPresenter;
 import com.example.foodplanner.planner.PlannerFragment;
 import com.example.foodplanner.search.SearchFragment;
 import com.example.foodplanner.setting.SettingFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity implements MainActivityInterface {
+public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    MainActivityPresenter mainActivityPresenter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        mainActivityPresenter = new MainActivityPresenter(this);
         replaceFragment(new HomeFragment());
         binding.bottomNavBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -55,11 +49,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
                 return true;
             }
         });
-    }
-
-    @Override
-    public void onChangeBottomNavBar() {
-
     }
 
     public void replaceFragment(Fragment newFragment){
