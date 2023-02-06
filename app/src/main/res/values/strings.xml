@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">Food Planner</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ScrollViewContent">Scrollable Screen</string>
     <string name="mealOfDay">Meals of the day</string>
     <string name="recently">Recently viewed</string>
+    <string name="addToSchedule">Add To Schedule</string>
 </resources>
