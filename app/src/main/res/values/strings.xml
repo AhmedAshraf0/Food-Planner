@@ -5,4 +5,9 @@
     <string name="recently">Recently viewed</string>
     <string name="addToSchedule">Add To Schedule</string>
     <string name="seeAll">See All</string>
+    <string name="filter">Filter by:</string>
+    <string name="meal">Meal</string>
+    <string name="category">Category</string>
+    <string name="ingredents">Ingredents</string>
+    <string name="noresults">0 Results</string>
 </resources>
