@@ -18,7 +18,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:elevation="8dp">
+            android:elevation="8dp"
+            app:cardCornerRadius="18dp">
 
 
             <RelativeLayout
@@ -40,6 +41,7 @@
                     android:layout_below="@id/imageView"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
                     android:text="Baked"
                     android:textColor="@color/black"
                     android:textSize="26sp"

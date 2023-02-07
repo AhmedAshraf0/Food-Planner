@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:contentDescription="@string/ScrollViewContent"
     android:fillViewport="true">
 
@@ -12,13 +12,13 @@
         android:id="@+id/homeConLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".dashboard.view.HomeFragment"
-        android:backgroundTint="@color/teal_200">
+        tools:context=".dashboard.view.HomeFragment">
 
         <TextView
             android:id="@+id/mealOfDayTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:text="@string/mealOfDay"
             android:textColor="@color/black"
             android:textSize="32sp"
@@ -34,7 +34,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mealOfDayTitle">
+            app:layout_constraintTop_toBottomOf="@+id/mealOfDayTitle"
+            app:layout_constraintVertical_bias="0.17000002">
 
         </androidx.viewpager2.widget.ViewPager2>
 
@@ -42,6 +43,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:text="@string/recently"
             android:textColor="@color/black"
             android:textSize="22sp"
@@ -53,11 +55,26 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recentRec"
-            android:layout_width="203dp"
-            android:layout_height="57dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.18"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/seeAllTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="@string/seeAll"
+            app:layout_constraintBottom_toTopOf="@+id/recentRec"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.795"
+            app:layout_constraintStart_toEndOf="@+id/textView4" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
