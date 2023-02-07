@@ -111,6 +111,34 @@
             tools:layout_editor_absoluteX="274dp" />
 
         <TextView
+            android:id="@+id/categories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:text="@string/categories"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/country_two_rec"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.131"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/countries"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34dp"
+            android:text="@string/countries"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/categories_rec"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.131"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
             android:id="@+id/seeAllTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -133,6 +161,42 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/country_one"
             app:layout_constraintTop_toBottomOf="@+id/category_two_rec" />
+
+        <TextView
+            android:id="@+id/seeAllTv5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:text="@string/seeAll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/country_two"
+            app:layout_constraintTop_toBottomOf="@+id/country_one_rec" />
+
+        <TextView
+            android:id="@+id/seeAllTv6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:text="@string/seeAll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/categories"
+            app:layout_constraintTop_toBottomOf="@+id/country_two_rec" />
+
+        <TextView
+            android:id="@+id/seeAllTv7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintHorizontal_bias="1.0"
+            android:text="@string/seeAll"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/countries"
+            app:layout_constraintTop_toBottomOf="@+id/categories_rec" />
 
         <TextView
             android:id="@+id/seeAllTv3"
@@ -197,6 +261,26 @@
             app:layout_constraintHorizontal_bias="0.18"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/country_two" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/categories_rec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.18"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/categories" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/countries_rec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.18"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/countries" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

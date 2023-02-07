@@ -8,10 +8,12 @@
     <string name="filter">Filter by:</string>
     <string name="meal">Meal</string>
     <string name="category">Category</string>
-    <string name="ingredents">Ingredents</string>
+    <string name="ingredents">Ingredients</string>
     <string name="noresults">0 Results</string>
     <string name="category_one">Seafood</string>
     <string name="category_two">Breakfast</string>
     <string name="country_one">Egyptian food</string>
     <string name="country_two">Canadian food</string>
+    <string name="categories">Categories</string>
+    <string name="countries">Countries</string>
 </resources>
