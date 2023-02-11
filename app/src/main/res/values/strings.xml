@@ -16,4 +16,5 @@
     <string name="country_two">Canadian food</string>
     <string name="categories">Categories</string>
     <string name="countries">Countries</string>
+    <string name="removeFromFavorites">Remove</string>
 </resources>
