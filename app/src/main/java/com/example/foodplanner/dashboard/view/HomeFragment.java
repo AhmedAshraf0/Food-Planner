@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +32,11 @@ public class HomeFragment extends Fragment {
     private List<SliderItem> images;
     private List<String> meals;
     private List<Integer> mealsPhotos;
+    private Handler sliderHandler;
 
     public HomeFragment() {
         // Required empty public constructor
+        sliderHandler = new Handler();
     }
 
     @Override
@@ -105,6 +108,14 @@ public class HomeFragment extends Fragment {
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(2);
         viewPager2.getChildAt(0).setOverScrollMode(View.OVER_SCROLL_NEVER);
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                sliderHandler.removeCallbacks(() -> viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1));
+                sliderHandler.postDelayed(() -> viewPager2.setCurrentItem(viewPager2.getCurrentItem()+1),4000);
+            }
+        });
 
         recentViewAdapter = new RecentViewAdapter(meals,mealsPhotos);
         recentRec.setAdapter(recentViewAdapter);
