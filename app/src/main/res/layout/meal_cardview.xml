@@ -10,7 +10,8 @@
     android:background="#FEFEFE"
     android:elevation="30dp"
     app:cardBackgroundColor="#00FFFFFF"
-    app:cardCornerRadius="20dp">
+    app:cardCornerRadius="20dp"
+    android:id="@+id/mealCardView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

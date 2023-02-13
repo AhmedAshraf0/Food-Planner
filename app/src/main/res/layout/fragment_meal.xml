@@ -80,6 +80,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mealTitleCard" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/ingredients_rec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.18"
+            app:layout_constraintTop_toBottomOf="@id/mealInstructions"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
