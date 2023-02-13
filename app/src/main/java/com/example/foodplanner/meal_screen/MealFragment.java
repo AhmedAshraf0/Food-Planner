@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.foodplanner.R;
 
@@ -21,6 +22,7 @@ public class MealFragment extends Fragment {
     private RecyclerView ingredentsRec;
     private IngredientsAdapter ingredientsAdapter;
     private List<String> measuresTest , ingredentsTest;
+    private ImageView imageView;
     public MealFragment() {
         // Required empty public constructor
     }
@@ -55,6 +57,8 @@ public class MealFragment extends Fragment {
         measuresTest.add("1 Packet");
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         ingredentsRec = view.findViewById(R.id.ingredients_rec);
+        imageView = view.findViewById(R.id.headerImage);
+        imageView.setImageResource(R.mipmap.image3);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         ingredentsRec.setLayoutManager(linearLayoutManager);
         ingredientsAdapter = new IngredientsAdapter(measuresTest,ingredentsTest);

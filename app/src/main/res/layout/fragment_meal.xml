@@ -55,12 +55,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="38dp"
-                    android:text="Fool mdamsdasfsagfdsagdsagfdasggdasgfdsgdgas"
+                    android:text="Open-Faced Pesto Egg Sandwich"
                     android:maxLines="2"
                     android:ellipsize="end"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="26sp"
+                    android:textSize="22sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/recipe"
                     app:layout_constraintStart_toStartOf="@+id/recipe"
@@ -75,19 +75,33 @@
             android:layout_marginTop="46dp"
             android:padding="20dp"
             android:text="@string/instructions"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mealTitleCard" />
+
+        <TextView
+            android:id="@+id/IngredientsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="@string/ingredents"
+            app:layout_constraintTop_toBottomOf="@id/mealInstructions"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/ingredients_rec"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ingredients_rec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.18"
-            app:layout_constraintTop_toBottomOf="@id/mealInstructions"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/IngredientsTitle" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

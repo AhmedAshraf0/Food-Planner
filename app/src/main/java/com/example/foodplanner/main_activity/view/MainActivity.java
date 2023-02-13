@@ -13,6 +13,7 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.dashboard.view.HomeFragment;
 import com.example.foodplanner.databinding.ActivityMainBinding;
 import com.example.foodplanner.favorites.FavoriteFragment;
+import com.example.foodplanner.meal_screen.MealFragment;
 import com.example.foodplanner.planner.PlannerFragment;
 import com.example.foodplanner.search.SearchFragment;
 import com.example.foodplanner.setting.SettingFragment;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        replaceFragment(new HomeFragment());
+        replaceFragment(new MealFragment());
         binding.bottomNavBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
