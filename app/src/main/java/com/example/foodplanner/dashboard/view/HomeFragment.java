@@ -117,7 +117,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        recentViewAdapter = new RecentViewAdapter(meals,mealsPhotos);
+        recentViewAdapter = new RecentViewAdapter(meals,mealsPhotos,getFragmentManager());
         recentRec.setAdapter(recentViewAdapter);
         category1Adapter = new Category1Adapter(meals,mealsPhotos);
         category1Rec.setAdapter(category1Adapter);
