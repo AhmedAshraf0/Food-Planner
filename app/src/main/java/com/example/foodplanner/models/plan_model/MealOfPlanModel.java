@@ -1,13 +1,13 @@
-package com.example.foodplanner.models;
+package com.example.foodplanner.models.plan_model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "favorites_table")
-public class MealModel {
+@Entity(tableName = "meals_of_plan_table")
+public class MealOfPlanModel {
     @PrimaryKey
-    private String idMeal;
-    private String strMeal , strDrinkAlternate , strCategory ,
+    private String email;
+    private String currentDay , idMeal , strMeal , strDrinkAlternate , strCategory ,
             strArea , strInstructions , strMealThumb , strTags , strYoutube ,
             strIngredient1 , strIngredient2 , strIngredient3 , strIngredient4 ,
             strIngredient5 , strIngredient6 , strIngredient7 , strIngredient8 ,
@@ -20,7 +20,9 @@ public class MealModel {
             strMeasure16 , strMeasure17 , strMeasure18 , strMeasure19 , strMeasure20 ,
             strSource , strImageSource , strCreativeCommonsConfirmed , dateModified;
 
-    public MealModel(String idMeal, String strMeal, String strDrinkAlternate, String strCategory, String strArea, String strInstructions, String strMealThumb, String strTags, String strYoutube, String strIngredient1, String strIngredient2, String strIngredient3, String strIngredient4, String strIngredient5, String strIngredient6, String strIngredient7, String strIngredient8, String strIngredient9, String strIngredient10, String strIngredient11, String strIngredient12, String strIngredient13, String strIngredient14, String strIngredient15, String strIngredient16, String strIngredient17, String strIngredient18, String strIngredient19, String strIngredient20, String strMeasure1, String strMeasure2, String strMeasure3, String strMeasure4, String strMeasure5, String strMeasure6, String strMeasure7, String strMeasure8, String strMeasure9, String strMeasure10, String strMeasure11, String strMeasure12, String strMeasure13, String strMeasure14, String strMeasure15, String strMeasure16, String strMeasure17, String strMeasure18, String strMeasure19, String strMeasure20, String strSource, String strImageSource, String strCreativeCommonsConfirmed, String dateModified) {
+    public MealOfPlanModel(String email , String currentDay , String idMeal, String strMeal, String strDrinkAlternate, String strCategory, String strArea, String strInstructions, String strMealThumb, String strTags, String strYoutube, String strIngredient1, String strIngredient2, String strIngredient3, String strIngredient4, String strIngredient5, String strIngredient6, String strIngredient7, String strIngredient8, String strIngredient9, String strIngredient10, String strIngredient11, String strIngredient12, String strIngredient13, String strIngredient14, String strIngredient15, String strIngredient16, String strIngredient17, String strIngredient18, String strIngredient19, String strIngredient20, String strMeasure1, String strMeasure2, String strMeasure3, String strMeasure4, String strMeasure5, String strMeasure6, String strMeasure7, String strMeasure8, String strMeasure9, String strMeasure10, String strMeasure11, String strMeasure12, String strMeasure13, String strMeasure14, String strMeasure15, String strMeasure16, String strMeasure17, String strMeasure18, String strMeasure19, String strMeasure20, String strSource, String strImageSource, String strCreativeCommonsConfirmed, String dateModified) {
+        this.email = email;
+        this.currentDay = currentDay;
         this.idMeal = idMeal;
         this.strMeal = strMeal;
         this.strDrinkAlternate = strDrinkAlternate;
@@ -74,6 +76,14 @@ public class MealModel {
         this.strImageSource = strImageSource;
         this.strCreativeCommonsConfirmed = strCreativeCommonsConfirmed;
         this.dateModified = dateModified;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getCurrentDay() {
+        return currentDay;
     }
 
     public String getIdMeal() {
