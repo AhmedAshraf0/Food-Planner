@@ -1,7 +1,13 @@
 package com.example.foodplanner.models;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "favorites_table")
 public class MealModel {
-    private String idMeal , strMeal , strDrinkAlternate , strCategory ,
+    @PrimaryKey
+    private String idMeal;
+    private String strMeal , strDrinkAlternate , strCategory ,
             strArea , strInstructions , strMealThumb , strTags , strYoutube ,
             strIngredient1 , strIngredient2 , strIngredient3 , strIngredient4 ,
             strIngredient5 , strIngredient6 , strIngredient7 , strIngredient8 ,
