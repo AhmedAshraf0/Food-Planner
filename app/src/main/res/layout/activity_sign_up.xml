@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sign_up.view.SignUp"
+    android:fillViewport="true"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_userNameTextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/user_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_userName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="#B3FFFFFF"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/et_emailTextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/email"
+            app:layout_constraintEnd_toEndOf="@+id/et_userNameTextInputLayout"
+            app:layout_constraintStart_toStartOf="@+id/et_userNameTextInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/et_userNameTextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="#B3FFFFFF"
+                android:inputType="textEmailAddress" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/passwordTextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/password"
+            app:endIconMode="password_toggle"
+            app:layout_constraintEnd_toEndOf="@+id/et_userNameTextInputLayout"
+            app:layout_constraintStart_toStartOf="@+id/et_userNameTextInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/et_emailTextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_signUpPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="#B3FFFFFF"
+                android:inputType="textEmailAddress"
+                android:password="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/confirmPasswordTextInputLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:hint="@string/password"
+            app:endIconMode="password_toggle"
+            app:layout_constraintEnd_toEndOf="@+id/et_userNameTextInputLayout"
+            app:layout_constraintStart_toStartOf="@+id/et_userNameTextInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/passwordTextInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_confirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="#B3FFFFFF"
+                android:inputType="textEmailAddress"
+                android:password="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/login_button_style"
+            android:text="@string/sign_up_btn"
+            android:textColor="#3DC794"
+            android:textSize="24sp"
+            app:background="@null"
+            app:layout_constraintEnd_toEndOf="@+id/confirmPasswordTextInputLayout"
+            app:layout_constraintStart_toStartOf="@+id/confirmPasswordTextInputLayout"
+            app:layout_constraintTop_toBottomOf="@+id/confirmPasswordTextInputLayout" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
