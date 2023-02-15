@@ -21,4 +21,12 @@
     <string name="instructions">STEP 1\r\nHeat the oil in a pan, fry the sliced onion until golden brown, then add the tonkatsu (see recipe here), placing it in the middle of the pan. Mix the dashi, soy, mirin and sugar together and tip three-quarters of the mixture around the tonkatsu. Sizzle for a couple of mins so the sauce thickens a little and the tonkatsu reheats.\r\n\r\nSTEP 2\r\nTip the beaten eggs around the tonkatsu and cook for 2-3 mins until the egg is cooked through but still a little runny. Divide the rice between two bowls, then top each with half the egg and tonkatsu mix, sprinkle over the chives and serve immediately, drizzling with a little more soy if you want an extra umami kick.</string>
     <string name="favButton">Add to favorites</string>
     <string name="toolbar_title">Wgbat</string>
+     <string name="user_name">user name</string>
+    <string name="password">password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="forgetPassword"><u>Forget Password</u>.</string>
+    <string name="notRegistered">Not Registered ..?</string>
+    <string name="google_signIn">Google</string>
+    <string name="sign_up"><u>Sign Up</u>.</string>
+    <string name="signWith">login with</string>
 </resources>
