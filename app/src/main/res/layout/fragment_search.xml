@@ -79,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingEnd="20dp"
-            android:text="@string/ingredients" />
+            android:text="@string/ingredents" />
     </RadioGroup>
 
     <View
