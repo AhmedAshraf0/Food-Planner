@@ -1,10 +1,12 @@
 package com.example.foodplanner.models.favorites_model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "favorites_table")
 public class FavoriteMealModel {
+    @NonNull
     @PrimaryKey
     private String user_email;
     private String idMeal , strMeal , strDrinkAlternate , strCategory ,

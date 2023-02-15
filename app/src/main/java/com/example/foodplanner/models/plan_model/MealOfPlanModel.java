@@ -1,10 +1,12 @@
 package com.example.foodplanner.models.plan_model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "meals_of_plan_table")
 public class MealOfPlanModel {
+    @NonNull
     @PrimaryKey
     private String email;
     private String currentDay , idMeal , strMeal , strDrinkAlternate , strCategory ,
