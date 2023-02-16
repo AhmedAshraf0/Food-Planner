@@ -15,11 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.dashboard.presenter.CommunicatorHome;
+import com.example.foodplanner.dashboard.presenter.PresenterHome;
+import com.example.foodplanner.network.ClientRetrofit;
+import com.example.foodplanner.network.models.MealModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements CommunicatorHome {
     private ViewPager2 viewPager2;
     private RecyclerView recentRec , category1Rec , category2Rec , country1Rec , country2Rec , categoriesRec, countriesRec;
     private RecentViewAdapter recentViewAdapter;
@@ -37,6 +41,8 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
         sliderHandler = new Handler();
+        PresenterHome presenterHome = new PresenterHome(ClientRetrofit.getInstance() , this);
+        presenterHome.getMeals();
     }
 
     @Override
@@ -131,5 +137,11 @@ public class HomeFragment extends Fragment {
         countriesRec.setAdapter(countriesAdapter);
         categoriesAdapter = new CategoriesAdapter(meals,mealsPhotos);
         categoriesRec.setAdapter(categoriesAdapter);
+    }
+
+    @Override
+    public void getResponse(MealModel body) {
+        //haaaaa7777
+        System.out.println(body.getStrIngredient1());
     }
 }
