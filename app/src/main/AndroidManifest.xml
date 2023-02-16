@@ -14,16 +14,13 @@
         android:theme="@style/Theme.FoodPlanner"
         tools:targetApi="31">
         <activity
-            android:name=".LandingPage"
+            android:name=".landingPage.view.LandingPage"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".sign_up.view.SignUp"
             android:exported="false" />
         <activity
-            android:name=".SignUp"
-            android:exported="false" />
-        <activity
-            android:name=".LoginScreenController"
+            android:name=".login_screen.view.LoginScreenController"
             android:exported="false" />
         <activity
             android:name=".main_activity.view.MainActivity"
