@@ -1,15 +1,12 @@
 package com.example.foodplanner.network;
 
-import com.example.foodplanner.network.models.CategoryModel;
-import com.example.foodplanner.network.models.CountryModel;
+import com.example.foodplanner.network.models.CategoryListModel;
+import com.example.foodplanner.network.models.CountryListModel;
 import com.example.foodplanner.network.models.GenericFilterModel;
-import com.example.foodplanner.network.models.IngredientModel;
-import com.example.foodplanner.network.models.RandomMealsModel;
+import com.example.foodplanner.network.models.IngredientListModel;
+import com.example.foodplanner.network.models.SearchMealsModel;
+import com.example.foodplanner.network.models.SearchModel;
 import com.example.foodplanner.network.models.SingleMealModel;
-import com.example.foodplanner.network.models.MealModel;
-import com.example.foodplanner.network.models.FilterMealModel;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -23,7 +20,7 @@ public interface ApiInterface {
     //----searching----
     //search by any text for meals
     @GET("search.php")
-    Call<RandomMealsModel> getSearchResult(@Query("s") String mealName);
+    Call<SearchMealsModel> getSearchResult(@Query("s") String mealName);
 
     //---filtering---
     //get meals by country
@@ -41,19 +38,19 @@ public interface ApiInterface {
 
     //get meal by id
     @GET("lookup.php")
-    Call<List<MealModel>> getMealById(@Query("i") int mealId);
+    Call<SearchModel> getMealById(@Query("i") int mealId);
 
     //get categories list- category = list always
     @GET("list.php")
-    Call<List<CategoryModel>> getAllCategories(@Query("c") String category);
+    Call<CategoryListModel> getAllCategories(@Query("c") String category);
 
     //get countries list- area = list always
     @GET("list.php")
-    Call<List<CountryModel>> getAllCountries(@Query("a") String area);
+    Call<CountryListModel> getAllCountries(@Query("a") String area);
 
     //get ingredients list- ingredient = list always
     @GET("list.php")
-    Call<List<IngredientModel>> getAllIngredients(@Query("i") String ingredient);
+    Call<IngredientListModel> getAllIngredients(@Query("i") String ingredient);
 
 
 }
