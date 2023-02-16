@@ -2,9 +2,12 @@ package com.example.foodplanner.network;
 
 import com.example.foodplanner.network.models.CategoryModel;
 import com.example.foodplanner.network.models.CountryModel;
+import com.example.foodplanner.network.models.GenericFilterModel;
 import com.example.foodplanner.network.models.IngredientModel;
+import com.example.foodplanner.network.models.RandomMealsModel;
+import com.example.foodplanner.network.models.SingleMealModel;
 import com.example.foodplanner.network.models.MealModel;
-import com.example.foodplanner.network.models.FilterForMealModel;
+import com.example.foodplanner.network.models.FilterMealModel;
 
 import java.util.List;
 
@@ -15,26 +18,26 @@ import retrofit2.http.Query;
 public interface ApiInterface {
     //get random meal
     @GET("random.php")
-    Call<MealModel> getRandomMeal();
+    Call<SingleMealModel> getRandomMeal();
 
     //----searching----
     //search by any text for meals
     @GET("search.php")
-    Call<List<MealModel>> getSearchResult(@Query("s") String mealName);
+    Call<RandomMealsModel> getSearchResult(@Query("s") String mealName);
 
     //---filtering---
     //get meals by country
     @GET("filter.php")
-    Call<List<FilterForMealModel>> getMealsOfCountry(@Query("a") String country);
+    Call<GenericFilterModel> getMealsOfCountry(@Query("a") String country);
 
     //----requesting data---
     //get meals by category
     @GET("filter.php")
-    Call<List<FilterForMealModel>> getMealsOfCategory(@Query("c") String category);
+    Call<GenericFilterModel> getMealsOfCategory(@Query("c") String category);
 
     //get meals by ingredient
     @GET("filter.php")
-    Call<List<FilterForMealModel>> getMealsOfIngredient(@Query("i") String ingredient);
+    Call<GenericFilterModel> getMealsOfIngredient(@Query("i") String ingredient);
 
     //get meal by id
     @GET("lookup.php")

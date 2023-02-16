@@ -1,6 +1,6 @@
 package com.example.foodplanner.network.models;
 
-public class FilterForMealModel {
+public class FilterMealModel {
     private String strMeal , strMealThumb , idMeal;
 
     public String getStrMeal() {

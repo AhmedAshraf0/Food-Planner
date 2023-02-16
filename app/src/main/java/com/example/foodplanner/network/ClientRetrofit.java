@@ -3,9 +3,12 @@ package com.example.foodplanner.network;
 import android.util.Log;
 
 import com.example.foodplanner.dashboard.presenter.NetworkDeligate;
+import com.example.foodplanner.network.models.GenericFilterModel;
 import com.example.foodplanner.network.models.MealModel;
+import com.example.foodplanner.network.models.RandomMealsModel;
+import com.example.foodplanner.network.models.SingleMealModel;
 
-import java.io.IOException;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,18 +41,34 @@ public class ClientRetrofit implements RemoteDataSource{
     //option 2 create interface
     @Override
     public void callApi(NetworkDeligate networkDeligate) {
-        apiInterface.getRandomMeal().enqueue(new Callback<MealModel>() {
+        apiInterface.getMealsOfIngredient("chicken_breast").enqueue(new Callback<GenericFilterModel>() {
             @Override
-            public void onResponse(Call<MealModel> call, Response<MealModel> response) {
-                networkDeligate.setResponse(response.body());
-                Log.i(TAG,"onSuccess: hiiiii--------------");
-                    Log.i(TAG,response.body().getIdMeal()+"");
+            public void onResponse(Call<GenericFilterModel> call, Response<GenericFilterModel> response) {
+                Log.i(TAG, "onResponse: "+response.body().getMeals().size());
             }
 
             @Override
-            public void onFailure(Call<MealModel> call, Throwable t) {
-                Log.i(TAG, "onFailure: ClientRetrofit.java");
+            public void onFailure(Call<GenericFilterModel> call, Throwable t) {
+                Log.i(TAG, "onFailure: "+t.getMessage());
             }
         });
     }
 }
+
+//testing
+/*
+*
+* apiInterface.getMealsOfCategory("Seafoo").enqueue(new Callback<GenericFilterModel>() {
+            @Override
+            public void onResponse(Call<GenericFilterModel> call, Response<GenericFilterModel> response) {
+                //must check if not null
+                Log.i(TAG, "onResponse: "+response.body().getMeals().size());
+            }
+
+            @Override
+            public void onFailure(Call<GenericFilterModel> call, Throwable t) {
+                Log.i(TAG, "onFailure: "+t.getMessage());
+            }
+        });
+*
+* */
