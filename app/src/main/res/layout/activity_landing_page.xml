@@ -15,7 +15,6 @@
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toTopOf="@+id/tv_StartMessage"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,14 +28,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_style"
-        android:text="@string/sign_in"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvSignUp"
-        app:layout_constraintEnd_toEndOf="@+id/tvSignUp"
-        app:layout_constraintStart_toStartOf="@+id/tvSignUp" />
+        android:text="@string/sign_up_btn"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_signInLandingPage"
+        app:layout_constraintEnd_toEndOf="@+id/tv_signInLandingPage"
+        app:layout_constraintStart_toStartOf="@+id/tv_signInLandingPage" />
 
     <TextView
-        android:id="@+id/tvSignUp"
+        android:id="@+id/tv_signInLandingPage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
@@ -45,7 +44,7 @@
         android:text="@string/sign_in"
         android:textAlignment="center"
         android:textColor="#3DC794"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -53,12 +52,12 @@
     <TextView
         android:id="@+id/tv_StartMessage"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="62dp"
         android:text="@string/landingMsg"
-        android:textSize="32dp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btn_signUp"
         app:layout_constraintEnd_toEndOf="parent"
