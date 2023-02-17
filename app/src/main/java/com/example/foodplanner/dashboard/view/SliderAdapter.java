@@ -1,5 +1,6 @@
 package com.example.foodplanner.dashboard.view;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,38 +11,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
+import com.example.foodplanner.network.models.FilterMealModel;
+import com.example.foodplanner.network.models.MealModel;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderViewHolder>{
-    private List<SliderItem> sliderItems;
+    private List<MealModel> randomMeals;
+    private Context context;
 
-    public SliderAdapter(List<SliderItem> sliderItems) {
-        this.sliderItems = sliderItems;
+    public SliderAdapter() {
+        randomMeals = new ArrayList<>();
     }
-
-    @NonNull
-    @Override
-    public SliderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater =LayoutInflater.from(parent.getContext());
-        View currentView = layoutInflater.inflate(R.layout.slide_item_container,parent,false);
-        SliderViewHolder sliderViewHolder = new SliderViewHolder(currentView);
-        return sliderViewHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull SliderViewHolder holder, int position) {
-        holder.getImageView().setImageResource(sliderItems.get(position).getImage());
-        holder.getTextView().setText(sliderItems.get(position).getTitle());
-    }
-
-    @Override
-    public int getItemCount() {
-        return sliderItems.size();
-    }
-
     class SliderViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView;
         private TextView textView;
@@ -59,5 +44,32 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
         public TextView getTextView() {
             return textView;
         }
+    }
+
+
+    @NonNull
+    @Override
+    public SliderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
+        LayoutInflater layoutInflater =LayoutInflater.from(parent.getContext());
+        View currentView = layoutInflater.inflate(R.layout.slide_item_container,parent,false);
+        SliderViewHolder sliderViewHolder = new SliderViewHolder(currentView);
+        return sliderViewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SliderViewHolder holder, int position) {
+        Glide.with(context).load(randomMeals.get(position).getStrMealThumb())
+                .into(holder.getImageView());
+        holder.getTextView().setText(randomMeals.get(position).getStrMeal());
+    }
+
+    @Override
+    public int getItemCount() {
+        return randomMeals.size();
+    }
+
+    public void setRandomModel(List<MealModel> randomMeals){
+        this.randomMeals = randomMeals;
     }
 }

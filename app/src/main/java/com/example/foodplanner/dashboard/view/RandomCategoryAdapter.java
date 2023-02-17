@@ -1,5 +1,6 @@
 package com.example.foodplanner.dashboard.view;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,18 +13,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
+import com.example.foodplanner.network.models.FilterMealModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Category2Adapter extends RecyclerView.Adapter<Category2Adapter.ViewHolder> {
-    List<String> meals;
-    List<Integer> mealsPhotos;
+public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAdapter.ViewHolder> {
+    private List<FilterMealModel> categoryModel;
+    private Context context;
 
-    public Category2Adapter(List<String> meals, List<Integer> mealsPhotos) {
-        this.meals = meals;
-        this.mealsPhotos = mealsPhotos;
+    public RandomCategoryAdapter() {
+        this.categoryModel = new ArrayList<>();
     }
+
 
     class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView mealImage;
@@ -59,6 +63,7 @@ public class Category2Adapter extends RecyclerView.Adapter<Category2Adapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         LayoutInflater layoutInflater= LayoutInflater.from(parent.getContext());
         View currentView = layoutInflater.inflate(R.layout.meal_cardview,parent,false);
         ViewHolder viewHolder = new ViewHolder(currentView);
@@ -67,15 +72,23 @@ public class Category2Adapter extends RecyclerView.Adapter<Category2Adapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getMealImage().setImageResource(mealsPhotos.get(position));
-        holder.getMealTitle().setText(meals.get(position));
+        Glide.with(context).load(categoryModel.get(position).getStrMealThumb()+"/preview")
+                .override(150,150)
+                .into(holder.getMealImage());
+        holder.getMealTitle().setText(categoryModel.get(position).getStrMeal());
         holder.getAddBtn().setOnClickListener(v -> {
-            Log.i("TAG","pressed from Breakfast--------");
+            Log.i("TAG","pressed from seafood--------");
         });
     }
 
     @Override
     public int getItemCount() {
-        return meals.size();
+        return categoryModel.size();
+    }
+    public void setCategoryModel(List<FilterMealModel> categoryModel) {
+        if(categoryModel == null){
+            Log.i("TAG", "setCategoryModel: null");
+        }
+        this.categoryModel = categoryModel;
     }
 }

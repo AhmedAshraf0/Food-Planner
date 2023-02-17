@@ -38,7 +38,8 @@ public class ClientRetrofit implements RemoteDataSource {
     private static ClientRetrofit instance = null;
     //to go here
     private ApiInterface apiInterface;
-    private List<List<FilterMealModel>> twoCategoriesMeals = null;
+    private List<List<FilterMealModel>> twoCategoriesMeals;
+    private List<String> categoryNames;
     private int randomCategory = 0;
 
     private ClientRetrofit() {
@@ -49,6 +50,7 @@ public class ClientRetrofit implements RemoteDataSource {
                 .build();
         apiInterface = retrofit.create(ApiInterface.class);
         twoCategoriesMeals = new ArrayList<>();
+        categoryNames = new ArrayList<>();
     }
 
     public static synchronized ClientRetrofit getInstance() {
@@ -64,24 +66,6 @@ public class ClientRetrofit implements RemoteDataSource {
     @SuppressLint("CheckResult")
     @Override
     public void callApi(NetworkDeligate networkDeligate) {//look at apiInterface. to understand
-        //call retrofit here + send data to upgrade ui
-
-//        apiInterface.getAllCategories(LIST_KEY).enqueue(new Callback<CategoryListModel>() {
-//            @Override
-//            public void onResponse(Call<CategoryListModel> call, Response<CategoryListModel> response) {
-//                Log.i(TAG, "onResponse: All categories success");
-//                networkDeligate.setCategoryResponse(response.body().getCategories());
-//                //no let's get 2 random categories and request all meals by those two categories
-//                //why here? because i don't need to save the categories list in the class i only need it once
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<CategoryListModel> call, Throwable t) {
-//                Log.i(TAG, "onFailure: All categories"+t.getMessage());
-//            }
-//        });
-
         //1.requesting list of categories
         @NonNull
         Single<List<CategoryModel>> observableCategories = apiInterface.getAllCategories(LIST_KEY)
@@ -95,56 +79,46 @@ public class ClientRetrofit implements RemoteDataSource {
         //3.getting random num to get two different categories of list
                     randomCategory = (int)(Math.random()*(categories.size()-1));
                     randomCategory %= (categories.size()-1);//not out of bounds
+                    categoryNames.add(categories.get(randomCategory).getStrCategory());
         //4.creating list that holds my two meals for two different categories to call networkdeligate once
 
         //5.requesting first specific category
-                    Single<List<FilterMealModel>> observableCatMeals = apiInterface
+                    Observable<List<FilterMealModel>> observableCatMeals = apiInterface
                             .getMealsOfCategory(categories.get(randomCategory).getStrCategory())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .map(i -> i.getMeals());
                     observableCatMeals.subscribe(meals->{
                         Log.i(TAG, "callApi: S-getAllCategories()-getMealsOfCategory()1 "+meals.get(0).getStrMeal());
-//                        networkDeligate.setCategoryMeals(meals);
                             twoCategoriesMeals.add(meals);
                             },
                             e-> Log.i(TAG, "callApi: E-getAllCategories()-getMealsOfCategory()1"+e.getMessage())
                     );
-
+                    Log.i(TAG, "callApi: randomCategory-------"+categories.get(randomCategory).getStrCategory());
         //6.requesting second specific category
-                    Single<List<FilterMealModel>> observableCatMeals2 = apiInterface
+                    Observable<List<FilterMealModel>> observableCatMeals2 = apiInterface
                             .getMealsOfCategory(categories.get((randomCategory+1)%(categories.size()-1))
                                     .getStrCategory())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .map(i -> i.getMeals());
                     observableCatMeals2.subscribe(meals->{
+                                categoryNames.add(categories.get((randomCategory+1)%(categories.size()-1)).getStrCategory());
                                 Log.i(TAG, "callApi: S-getAllCategories()-getMealsOfCategory()2 "+meals.size());
-                                Log.i(TAG, "testing 1 "+twoCategoriesMeals.size());
+                                Log.i(TAG, "testing---- 1 "+twoCategoriesMeals.size());
                                 twoCategoriesMeals.add(meals);
                                 Log.i(TAG, "testing 2 "+twoCategoriesMeals.size());
         //7.sending list of two meals for different two categories after granting that there is no error happened
-                                networkDeligate.setCategoryMeals(twoCategoriesMeals);
                             },
-                            e-> Log.i(TAG, "callApi: E-getAllCategories()-getMealsOfCategory()2"+e.getMessage())
+                            e-> Log.i(TAG, "callApi: E-getAllCategories()-getMealsOfCategory()2"+e.getMessage()),
+                            () -> networkDeligate.setCategoryMeals(twoCategoriesMeals , categoryNames)
                     );
             //if it happened it will go to the next e
             //----------------here twoCategoriesMeals list is zero not 2 ?!
                 },
                 e -> Log.i(TAG, "callApi: E-getAllCategories()" + e.getMessage())
         );
-//        apiInterface.getAllCountries(LIST_KEY).enqueue(new Callback<CountryListModel>() {
-//            @Override
-//            public void onResponse(Call<CountryListModel> call, Response<CountryListModel> response) {
-//                Log.i(TAG, "onResponse: All countries success");
-//                networkDeligate.setCountryResponse(response.body().getCountries());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<CountryListModel> call, Throwable t) {
-//                Log.i(TAG, "onFailure: All countries"+t.getMessage());
-//            }
-//        });
+
         @NonNull
         Single<List<CountryModel>> observableCountries = apiInterface.getAllCountries(LIST_KEY)
                 .subscribeOn(Schedulers.io())
@@ -156,18 +130,8 @@ public class ClientRetrofit implements RemoteDataSource {
                 },
                 e-> Log.i(TAG, "callApi: E-getAllCountries()"+e.getMessage())
                 );
-//        apiInterface.getSearchResult("").enqueue(new Callback<SearchMealsModel>() {
-//            @Override
-//            public void onResponse(Call<SearchMealsModel> call, Response<SearchMealsModel> response) {
-//                Log.i(TAG, "onResponse: All categories success");
-//                networkDeligate.setRandomMealsResponse(response.body().getMeals());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<SearchMealsModel> call, Throwable t) {
-//                Log.i(TAG, "onFailure: All categories"+t.getMessage());
-//            }
-//        });
+
+        //getting 25 random meals
         @NonNull
         Single<List<MealModel>> observableRandomMeals = apiInterface.getSearchResult("")
                 .subscribeOn(Schedulers.io())

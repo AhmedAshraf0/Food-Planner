@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.dashboard.presenter.CommunicatorHome;
@@ -32,15 +33,13 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     private ViewPager2 viewPager2;
     private RecyclerView recentRec , category1Rec , category2Rec , country1Rec , country2Rec , categoriesRec, countriesRec;
     private RecentViewAdapter recentViewAdapter;
-    private Category1Adapter category1Adapter;
-    private Category2Adapter category2Adapter;
+    private TextView categoryTitleOne, categoryTitleTwo;
+    private RandomCategoryAdapter randomCategoryAdapterOne, randomCategoryAdapterTwo;
     private Country1Adapter country1Adapter;
     private Country2Adapter country2Adapter;
     private CountriesAdapter countriesAdapter;
     private CategoriesAdapter categoriesAdapter;
-    private List<SliderItem> images;
-    private List<String> meals;
-    private List<Integer> mealsPhotos;
+    private SliderAdapter sliderAdapter;
     private List<CategoryModel> allCategories;
     private List<CountryModel> allCountries;
     private List<MealModel> randomMeals;
@@ -57,7 +56,9 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
         super.onCreate(savedInstanceState);
         PresenterHome presenterHome = new PresenterHome(ClientRetrofit.getInstance() , this);
         presenterHome.getMeals();
-        category1Adapter = new Category1Adapter();
+        randomCategoryAdapterOne = new RandomCategoryAdapter();
+        randomCategoryAdapterTwo = new RandomCategoryAdapter();
+        sliderAdapter = new SliderAdapter();
     }
 
     @Override
@@ -77,49 +78,18 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
         country2Rec = view.findViewById(R.id.country_two_rec);
         countriesRec = view.findViewById(R.id.countries_rec);
         categoriesRec = view.findViewById(R.id.categories_rec);
-        LinearLayoutManager llMgrRecent , llMgrCat1 , llMgrCat2 , llMgrCount1 , llMgrCount2 , llMgrCats , llMgrCounts;
-        llMgrRecent= new LinearLayoutManager(view.getContext());
-        llMgrCat1 = new LinearLayoutManager(view.getContext());
-        llMgrCat2 = new LinearLayoutManager(view.getContext());
-        llMgrCount1 = new LinearLayoutManager(view.getContext());
-        llMgrCount2 = new LinearLayoutManager(view.getContext());
-        llMgrCats = new LinearLayoutManager(view.getContext());
-        llMgrCounts = new LinearLayoutManager(view.getContext());
-        llMgrCat1.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrCat2.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrRecent.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrCount1.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrCount2.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrCounts.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrCats.setOrientation(RecyclerView.HORIZONTAL);
-        recentRec.setLayoutManager(llMgrRecent);
-        category1Rec.setLayoutManager(llMgrCat1);
-        category2Rec.setLayoutManager(llMgrCat2);
-        country1Rec.setLayoutManager(llMgrCount1);
-        country2Rec.setLayoutManager(llMgrCount2);
-        countriesRec.setLayoutManager(llMgrCounts);
-        categoriesRec.setLayoutManager(llMgrCats);
+        categoryTitleOne = view.findViewById(R.id.category_one);
+        categoryTitleTwo = view.findViewById(R.id.category_two);
 
-        images = new ArrayList<>();
-        meals =new ArrayList<>();
-        mealsPhotos =new ArrayList<>();
-        meals.add("first meal");
-        meals.add("second meal");
-        meals.add("third meal");
-        meals.add("forth meal");
-        meals.add("fifth meal");
-        mealsPhotos.add(R.mipmap.image1);
-        mealsPhotos.add(R.mipmap.image2);
-        mealsPhotos.add(R.mipmap.image3);
-        mealsPhotos.add(R.mipmap.image4);
-        mealsPhotos.add(R.mipmap.image5);
+        recentRec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        category1Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        category2Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        country1Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        country2Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        countriesRec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        categoriesRec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
 
-        images.add(new SliderItem(R.mipmap.image1,"first meal"));
-        images.add(new SliderItem(R.mipmap.image2,"second meal"));
-        images.add(new SliderItem(R.mipmap.image3,"third meal"));
-        images.add(new SliderItem(R.mipmap.image4,"forth meal"));
-        images.add(new SliderItem(R.mipmap.image5,"fifth meal"));
-        viewPager2.setAdapter(new SliderAdapter(images));
+        viewPager2.setAdapter(sliderAdapter);
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(2);
@@ -135,10 +105,8 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
 
 //        recentViewAdapter = new RecentViewAdapter(meals,mealsPhotos,getFragmentManager());
 //        recentRec.setAdapter(recentViewAdapter);
-//        category1Adapter = new Category1Adapter();
-        category1Rec.setAdapter(category1Adapter);
-//        category2Adapter = new Category2Adapter(meals,mealsPhotos);
-//        category2Rec.setAdapter(category2Adapter);
+        category1Rec.setAdapter(randomCategoryAdapterOne);
+        category2Rec.setAdapter(randomCategoryAdapterTwo);
 //        country1Adapter = new Country1Adapter(meals,mealsPhotos);
 //        country1Rec.setAdapter(country1Adapter);
 //        country2Adapter = new Country2Adapter(meals,mealsPhotos);
@@ -167,14 +135,19 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     public void getRandomMealsResponse(List<MealModel> randomMeals) {
         this.randomMeals = randomMeals;
         Log.i(TAG, "random meals: "+randomMeals.size());
+        sliderAdapter.setRandomModel(randomMeals.subList(0,5));
+        sliderAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void getCategoryMeals(List<List<FilterMealModel>> categoryMeals) {
-        Log.i(TAG, "getCategoryMeals: "+categoryMeals.size());
-        Log.i(TAG, "getCategoryMeals: "+categoryMeals.get(0).get(0).getStrMeal());
+    public void getCategoryMeals(List<List<FilterMealModel>> categoryMeals , List<String> categoryNames) {
         categoriesMeals = categoryMeals;
-        category1Adapter.setCategoryModel(categoryMeals.get(0));
-        category1Adapter.notifyDataSetChanged();
+        categoryTitleOne.setText(categoryNames.get(0));
+        randomCategoryAdapterOne.setCategoryModel(categoryMeals.get(0));
+        randomCategoryAdapterOne.notifyDataSetChanged();
+
+        categoryTitleTwo.setText(categoryNames.get(1));
+        randomCategoryAdapterTwo.setCategoryModel(categoryMeals.get(1));
+        randomCategoryAdapterTwo.notifyDataSetChanged();
     }
 }

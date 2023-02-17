@@ -32,7 +32,7 @@ public interface ApiInterface {
     //----requesting data---
     //get meals by category
     @GET("filter.php")
-    Single<GenericFilterModel> getMealsOfCategory(@Query("c") String category);
+    Observable<GenericFilterModel> getMealsOfCategory(@Query("c") String category);
 
     //get meals by ingredient
     @GET("filter.php")

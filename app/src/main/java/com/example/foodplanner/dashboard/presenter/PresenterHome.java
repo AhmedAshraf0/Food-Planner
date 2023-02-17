@@ -40,7 +40,7 @@ public class PresenterHome implements NetworkDeligate{
     }
 
     @Override
-    public void setCategoryMeals(List<List<FilterMealModel>> categoryMeals) {
-        communicatorHome.getCategoryMeals(categoryMeals);
+    public void setCategoryMeals(List<List<FilterMealModel>> categoryMeals , List<String> categoryNames) {
+        communicatorHome.getCategoryMeals(categoryMeals , categoryNames);
     }
 }

@@ -81,7 +81,7 @@ public class MealFragment extends Fragment {
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
                 //i should parse url to get id after v=
                 String videoId = "tspdJ6hxqnc";
-                youTubePlayer.loadVideo(videoId, 0);
+                youTubePlayer.cueVideo(videoId,0);
             }
         });
         imageView.setImageResource(R.mipmap.image3);
