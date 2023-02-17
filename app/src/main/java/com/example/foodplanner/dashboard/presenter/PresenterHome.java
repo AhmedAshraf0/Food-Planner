@@ -1,7 +1,14 @@
 package com.example.foodplanner.dashboard.presenter;
 
+import android.util.Log;
+
 import com.example.foodplanner.network.RemoteDataSource;
+import com.example.foodplanner.network.models.CategoryModel;
+import com.example.foodplanner.network.models.CountryModel;
+import com.example.foodplanner.network.models.FilterMealModel;
 import com.example.foodplanner.network.models.MealModel;
+
+import java.util.List;
 
 public class PresenterHome implements NetworkDeligate{
     private RemoteDataSource remoteDataSource;
@@ -17,7 +24,23 @@ public class PresenterHome implements NetworkDeligate{
     }
 
     @Override
-    public void setResponse(MealModel body) {
-        communicatorHome.getResponse(body);
+    public void setCategoryResponse(List<CategoryModel> allCategories) {
+        communicatorHome.getCategoryResponse(allCategories);
+        Log.i("TAG", "setCategoryResponse: ----------------------");
+    }
+
+    @Override
+    public void setCountryResponse(List<CountryModel> allCountries) {
+        communicatorHome.getCountryResponse(allCountries);
+    }
+
+    @Override
+    public void setRandomMealsResponse(List<MealModel> randomMeals) {
+        communicatorHome.getRandomMealsResponse(randomMeals);
+    }
+
+    @Override
+    public void setCategoryMeals(List<List<FilterMealModel>> categoryMeals) {
+        communicatorHome.getCategoryMeals(categoryMeals);
     }
 }

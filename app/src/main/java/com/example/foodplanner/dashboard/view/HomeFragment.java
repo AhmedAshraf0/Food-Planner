@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,16 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.dashboard.presenter.CommunicatorHome;
 import com.example.foodplanner.dashboard.presenter.PresenterHome;
 import com.example.foodplanner.network.ClientRetrofit;
+import com.example.foodplanner.network.models.CategoryModel;
+import com.example.foodplanner.network.models.CountryModel;
+import com.example.foodplanner.network.models.FilterMealModel;
 import com.example.foodplanner.network.models.MealModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements CommunicatorHome {
+    private static final String TAG = "HomeFragment";
     private ViewPager2 viewPager2;
     private RecyclerView recentRec , category1Rec , category2Rec , country1Rec , country2Rec , categoriesRec, countriesRec;
     private RecentViewAdapter recentViewAdapter;
@@ -36,18 +41,23 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     private List<SliderItem> images;
     private List<String> meals;
     private List<Integer> mealsPhotos;
+    private List<CategoryModel> allCategories;
+    private List<CountryModel> allCountries;
+    private List<MealModel> randomMeals;
+    private List<List<FilterMealModel>> categoriesMeals;
     private Handler sliderHandler;
 
     public HomeFragment() {
         // Required empty public constructor
         sliderHandler = new Handler();
-        PresenterHome presenterHome = new PresenterHome(ClientRetrofit.getInstance() , this);
-        presenterHome.getMeals();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        PresenterHome presenterHome = new PresenterHome(ClientRetrofit.getInstance() , this);
+        presenterHome.getMeals();
+        category1Adapter = new Category1Adapter();
     }
 
     @Override
@@ -123,25 +133,48 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
             }
         });
 
-        recentViewAdapter = new RecentViewAdapter(meals,mealsPhotos,getFragmentManager());
-        recentRec.setAdapter(recentViewAdapter);
-        category1Adapter = new Category1Adapter(meals,mealsPhotos);
+//        recentViewAdapter = new RecentViewAdapter(meals,mealsPhotos,getFragmentManager());
+//        recentRec.setAdapter(recentViewAdapter);
+//        category1Adapter = new Category1Adapter();
         category1Rec.setAdapter(category1Adapter);
-        category2Adapter = new Category2Adapter(meals,mealsPhotos);
-        category2Rec.setAdapter(category2Adapter);
-        country1Adapter = new Country1Adapter(meals,mealsPhotos);
-        country1Rec.setAdapter(country1Adapter);
-        country2Adapter = new Country2Adapter(meals,mealsPhotos);
-        country2Rec.setAdapter(country2Adapter);
-        countriesAdapter = new CountriesAdapter(meals,mealsPhotos);
-        countriesRec.setAdapter(countriesAdapter);
-        categoriesAdapter = new CategoriesAdapter(meals,mealsPhotos);
-        categoriesRec.setAdapter(categoriesAdapter);
+//        category2Adapter = new Category2Adapter(meals,mealsPhotos);
+//        category2Rec.setAdapter(category2Adapter);
+//        country1Adapter = new Country1Adapter(meals,mealsPhotos);
+//        country1Rec.setAdapter(country1Adapter);
+//        country2Adapter = new Country2Adapter(meals,mealsPhotos);
+//        country2Rec.setAdapter(country2Adapter);
+//        countriesAdapter = new CountriesAdapter(meals,mealsPhotos);
+//        countriesRec.setAdapter(countriesAdapter);
+//        categoriesAdapter = new CategoriesAdapter(meals,mealsPhotos);
+//        categoriesRec.setAdapter(categoriesAdapter);
     }
 
     @Override
-    public void getResponse(MealModel body) {
+    public void getCategoryResponse(List<CategoryModel> allCategories) {
         //haaaaa7777
-        System.out.println(body.getStrIngredient1());
+//        System.out.println(body.getStrIngredient1());
+        this.allCategories = allCategories;
+        Log.i(TAG, "getCategoryResponse: "+allCategories.size());
+    }
+
+    @Override
+    public void getCountryResponse(List<CountryModel> allCountries) {
+        this.allCountries = allCountries;
+        Log.i(TAG, "getCountryResponse: "+allCountries.size());
+    }
+
+    @Override
+    public void getRandomMealsResponse(List<MealModel> randomMeals) {
+        this.randomMeals = randomMeals;
+        Log.i(TAG, "random meals: "+randomMeals.size());
+    }
+
+    @Override
+    public void getCategoryMeals(List<List<FilterMealModel>> categoryMeals) {
+        Log.i(TAG, "getCategoryMeals: "+categoryMeals.size());
+        Log.i(TAG, "getCategoryMeals: "+categoryMeals.get(0).get(0).getStrMeal());
+        categoriesMeals = categoryMeals;
+        category1Adapter.setCategoryModel(categoryMeals.get(0));
+        category1Adapter.notifyDataSetChanged();
     }
 }
