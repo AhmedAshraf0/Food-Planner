@@ -17,7 +17,7 @@ import retrofit2.http.Query;
 public interface ApiInterface {
     //get random meal
     @GET("random.php")
-    Single<SingleMealModel> getRandomMeal();
+    Observable<SingleMealModel> getRandomMeal();
 
     //----searching----
     //search by any text for meals or send "" ot get 25  random meals
@@ -27,7 +27,7 @@ public interface ApiInterface {
     //---filtering---
     //get meals by country
     @GET("filter.php")
-    Single<GenericFilterModel> getMealsOfCountry(@Query("a") String country);
+    Observable<GenericFilterModel> getMealsOfCountry(@Query("a") String country);
 
     //----requesting data---
     //get meals by category

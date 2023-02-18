@@ -12,5 +12,5 @@ public interface CommunicatorHome {
     void getCountryResponse(List<CountryModel> allCountries);
     void getRandomMealsResponse(List<MealModel> randomMeals);
     void getCategoryMeals(List<List<FilterMealModel>> categoryMeals , List<String> categoryNames);
-
+    void getRandomMealResponse(List<List<FilterMealModel>> countryMeals , List<String> countryNames);
 }

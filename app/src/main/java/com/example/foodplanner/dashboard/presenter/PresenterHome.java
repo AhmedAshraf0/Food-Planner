@@ -43,4 +43,9 @@ public class PresenterHome implements NetworkDeligate{
     public void setCategoryMeals(List<List<FilterMealModel>> categoryMeals , List<String> categoryNames) {
         communicatorHome.getCategoryMeals(categoryMeals , categoryNames);
     }
+
+    @Override
+    public void setRandomMealResponse(List<List<FilterMealModel>> countryMeals , List<String> countryNames) {
+        communicatorHome.getRandomMealResponse(countryMeals,countryNames);
+    }
 }

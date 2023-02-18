@@ -38,9 +38,9 @@ public class ClientRetrofit implements RemoteDataSource {
     private static ClientRetrofit instance = null;
     //to go here
     private ApiInterface apiInterface;
-    private List<List<FilterMealModel>> twoCategoriesMeals;
-    private List<String> categoryNames;
-    private int randomCategory = 0;
+    private List<List<FilterMealModel>> twoCategoriesMeals , twoRandomMeals;
+    private List<String> categoryNames , countryNames;
+    private int randomCategory = 0 , randomCountry = 0;
 
     private ClientRetrofit() {
         Retrofit retrofit = new Retrofit
@@ -51,6 +51,8 @@ public class ClientRetrofit implements RemoteDataSource {
         apiInterface = retrofit.create(ApiInterface.class);
         twoCategoriesMeals = new ArrayList<>();
         categoryNames = new ArrayList<>();
+        twoRandomMeals = new ArrayList<>();
+        countryNames = new ArrayList<>();
     }
 
     public static synchronized ClientRetrofit getInstance() {
@@ -72,77 +74,120 @@ public class ClientRetrofit implements RemoteDataSource {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(i -> i.getCategories());
-        observableCategories.subscribe(categories -> {
+        observableCategories.subscribe(
+                categories -> {
                     Log.i(TAG, "callApi: S-getAllCategories()" + categories.size());
-        //2.sending this list to view
+                    //2.sending this list to view
                     networkDeligate.setCategoryResponse(categories);
-        //3.getting random num to get two different categories of list
-                    randomCategory = (int)(Math.random()*(categories.size()-1));
-                    randomCategory %= (categories.size()-1);//not out of bounds
+                    //3.getting random num to get two different categories of list
+                    randomCategory = (int) (Math.random() * (categories.size() - 1));
+                    randomCategory %= (categories.size() - 1);//not out of bounds
                     categoryNames.add(categories.get(randomCategory).getStrCategory());
-        //4.creating list that holds my two meals for two different categories to call networkdeligate once
+                    //4.creating list that holds my two meals for two different categories to call networkdeligate once
 
-        //5.requesting first specific category
+                    //5.requesting first specific category
                     Observable<List<FilterMealModel>> observableCatMeals = apiInterface
                             .getMealsOfCategory(categories.get(randomCategory).getStrCategory())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .map(i -> i.getMeals());
-                    observableCatMeals.subscribe(meals->{
-                        Log.i(TAG, "callApi: S-getAllCategories()-getMealsOfCategory()1 "+meals.get(0).getStrMeal());
-                            twoCategoriesMeals.add(meals);
+                    observableCatMeals.subscribe(
+                            meals -> {
+                                Log.i(TAG, "callApi: S-getAllCategories()-getMealsOfCategory()1 " + meals.get(0).getStrMeal());
+                                twoCategoriesMeals.add(meals);
                             },
-                            e-> Log.i(TAG, "callApi: E-getAllCategories()-getMealsOfCategory()1"+e.getMessage())
+                            e -> Log.i(TAG, "callApi: E-getAllCategories()-getMealsOfCategory()1" + e.getMessage())
                     );
-                    Log.i(TAG, "callApi: randomCategory-------"+categories.get(randomCategory).getStrCategory());
-        //6.requesting second specific category
+                    Log.i(TAG, "callApi: randomCategory-------" + categories.get(randomCategory).getStrCategory());
+                    //6.requesting second specific category
                     Observable<List<FilterMealModel>> observableCatMeals2 = apiInterface
-                            .getMealsOfCategory(categories.get((randomCategory+1)%(categories.size()-1))
+                            .getMealsOfCategory(categories.get((randomCategory + 1) % (categories.size() - 1))
                                     .getStrCategory())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .map(i -> i.getMeals());
-                    observableCatMeals2.subscribe(meals->{
-                                categoryNames.add(categories.get((randomCategory+1)%(categories.size()-1)).getStrCategory());
-                                Log.i(TAG, "callApi: S-getAllCategories()-getMealsOfCategory()2 "+meals.size());
-                                Log.i(TAG, "testing---- 1 "+twoCategoriesMeals.size());
+                    observableCatMeals2.subscribe(
+                            meals -> {
+                                categoryNames.add(categories.get((randomCategory + 1) % (categories.size() - 1)).getStrCategory());
+                                Log.i(TAG, "callApi: S-getAllCategories()-getMealsOfCategory()2 " + meals.size());
+                                Log.i(TAG, "testing---- 1 " + twoCategoriesMeals.size());
                                 twoCategoriesMeals.add(meals);
-                                Log.i(TAG, "testing 2 "+twoCategoriesMeals.size());
-        //7.sending list of two meals for different two categories after granting that there is no error happened
+                                Log.i(TAG, "testing 2 " + twoCategoriesMeals.size());
+                                //7.sending list of two meals for different two categories using onComplete
                             },
-                            e-> Log.i(TAG, "callApi: E-getAllCategories()-getMealsOfCategory()2"+e.getMessage()),
-                            () -> networkDeligate.setCategoryMeals(twoCategoriesMeals , categoryNames)
+                            e -> Log.i(TAG, "callApi: E-getAllCategories()-getMealsOfCategory()2" + e.getMessage()),
+                            () -> networkDeligate.setCategoryMeals(twoCategoriesMeals, categoryNames)
                     );
-            //if it happened it will go to the next e
-            //----------------here twoCategoriesMeals list is zero not 2 ?!
+                    //if it happened it will go to the next e
+                    //----------------here twoCategoriesMeals list is zero not 2 ?!
                 },
                 e -> Log.i(TAG, "callApi: E-getAllCategories()" + e.getMessage())
         );
 
+        //requesting list of countries and request meals of them
         @NonNull
         Single<List<CountryModel>> observableCountries = apiInterface.getAllCountries(LIST_KEY)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(i -> i.getCountries());
-        observableCountries.subscribe(countries -> {
+        observableCountries.subscribe(
+                countries -> {
                     Log.i(TAG, "callApi: S-getAllCountries()" + countries.size());
                     networkDeligate.setCountryResponse(countries);
+
+                    //getting meals of two random countries
+                    randomCountry = (int) (Math.random() * (countries.size() - 1));
+                    randomCountry %= (countries.size() - 1);//not out of bounds
+                    countryNames.add(countries.get(randomCountry).getStrArea());
+
+                    //get meals for first country
+                    Observable<List<FilterMealModel>> observableCountryMeals = apiInterface
+                            .getMealsOfCountry(countries.get(randomCountry).getStrArea())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .map(i->i.getMeals());
+                    observableCountryMeals.subscribe(
+                            filterMealModels -> {
+                                Log.i(TAG, "callApi: S-1 -getAllCountries()->getMealsOfcountry() "+filterMealModels.size());
+                                twoRandomMeals.add(filterMealModels);
+                            },
+                            e-> Log.i(TAG, "callApi: E-1 -getAllCountries()->getMealsOfcountry()" + e.getMessage())
+                    );
+
+                    //get meals for second country
+                    Observable<List<FilterMealModel>> observableCountryMeals2 = apiInterface
+                            .getMealsOfCountry(countries.get((randomCategory + 1) % (countries.size() - 1)).getStrArea())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .map(i->i.getMeals());
+                    observableCountryMeals2.subscribe(
+                            filterMealModels -> {
+                                countryNames.add(countries.get((randomCategory + 1) % (countries.size() - 1)).getStrArea());
+                                Log.i(TAG, "callApi: S-2 -getAllCountries()->getMealsOfcountry() "+filterMealModels.size());
+                                twoRandomMeals.add(filterMealModels);
+                            },
+                            e-> Log.i(TAG, "callApi: E-2 -getAllCountries()->getMealsOfcountry()" + e.getMessage()),
+                            ()->networkDeligate.setRandomMealResponse(twoRandomMeals,countryNames)
+                    );
                 },
-                e-> Log.i(TAG, "callApi: E-getAllCountries()"+e.getMessage())
-                );
+                e -> Log.i(TAG, "callApi: E-getAllCountries()" + e.getMessage())
+        );
 
         //getting 25 random meals
         @NonNull
         Single<List<MealModel>> observableRandomMeals = apiInterface.getSearchResult("")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(i->i.getMeals());
-        observableRandomMeals.subscribe(meals->{
-            Log.i(TAG, "callApi: S-getSearchResult()-RandomMeals"+meals.size());
-            networkDeligate.setRandomMealsResponse(meals);
+                .map(i -> i.getMeals());
+        observableRandomMeals.subscribe(
+                meals -> {
+                    Log.i(TAG, "callApi: S-getSearchResult()-RandomMeals" + meals.size());
+                    networkDeligate.setRandomMealsResponse(meals);
                 },
-                e-> Log.i(TAG, "callApi: E-getSearchResult()-RandomMeals"+e.getMessage())
+                e -> Log.i(TAG, "callApi: E-getSearchResult()-RandomMeals" + e.getMessage())
         );
+
+        //
     }
 }
 

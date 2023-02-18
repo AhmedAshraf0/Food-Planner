@@ -1,5 +1,6 @@
 package com.example.foodplanner.dashboard.view;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +13,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.foodplanner.R;
+import com.example.foodplanner.network.models.FilterMealModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Country1Adapter extends RecyclerView.Adapter<Country1Adapter.ViewHolder> {
-    List<String> meals;
-    List<Integer> mealsPhotos;
+public class RandomCountryAdapter extends RecyclerView.Adapter<RandomCountryAdapter.ViewHolder> {
+    private List<FilterMealModel> filterMealModel;
+    private Context context;
 
-    public Country1Adapter(List<String> meals, List<Integer> mealsPhotos) {
-        this.meals = meals;
-        this.mealsPhotos = mealsPhotos;
+    public RandomCountryAdapter() {
+        filterMealModel = new ArrayList<>();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -59,6 +62,7 @@ public class Country1Adapter extends RecyclerView.Adapter<Country1Adapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        context = parent.getContext();
         LayoutInflater layoutInflater= LayoutInflater.from(parent.getContext());
         View currentView = layoutInflater.inflate(R.layout.meal_cardview,parent,false);
         ViewHolder viewHolder = new ViewHolder(currentView);
@@ -67,8 +71,10 @@ public class Country1Adapter extends RecyclerView.Adapter<Country1Adapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getMealImage().setImageResource(mealsPhotos.get(position));
-        holder.getMealTitle().setText(meals.get(position));
+        Glide.with(context).load(filterMealModel.get(position).getStrMealThumb()+"/preview")
+                .override(150,150)
+                .into(holder.getMealImage());
+        holder.getMealTitle().setText(filterMealModel.get(position).getStrMeal());
         holder.getAddBtn().setOnClickListener(v -> {
             Log.i("TAG","pressed from Breakfast--------");
         });
@@ -76,6 +82,12 @@ public class Country1Adapter extends RecyclerView.Adapter<Country1Adapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return meals.size();
+        return filterMealModel.size();
+    }
+    public void setMealsOfCountry(List<FilterMealModel> filterMealModel) {
+        if(filterMealModel == null){
+            Log.i("TAG", "setCategoryModel: null");
+        }
+        this.filterMealModel = filterMealModel;
     }
 }

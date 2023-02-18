@@ -25,7 +25,6 @@ import com.example.foodplanner.network.models.CountryModel;
 import com.example.foodplanner.network.models.FilterMealModel;
 import com.example.foodplanner.network.models.MealModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements CommunicatorHome {
@@ -33,10 +32,9 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     private ViewPager2 viewPager2;
     private RecyclerView recentRec , category1Rec , category2Rec , country1Rec , country2Rec , categoriesRec, countriesRec;
     private RecentViewAdapter recentViewAdapter;
-    private TextView categoryTitleOne, categoryTitleTwo;
+    private TextView categoryTitleOne, categoryTitleTwo , countryTitleOne , countryTitleTwo;
     private RandomCategoryAdapter randomCategoryAdapterOne, randomCategoryAdapterTwo;
-    private Country1Adapter country1Adapter;
-    private Country2Adapter country2Adapter;
+    private RandomCountryAdapter randomCountryAdapterOne , randomCountryAdapterTwo;
     private CountriesAdapter countriesAdapter;
     private CategoriesAdapter categoriesAdapter;
     private SliderAdapter sliderAdapter;
@@ -58,6 +56,8 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
         presenterHome.getMeals();
         randomCategoryAdapterOne = new RandomCategoryAdapter();
         randomCategoryAdapterTwo = new RandomCategoryAdapter();
+        randomCountryAdapterOne = new RandomCountryAdapter();
+        randomCountryAdapterTwo = new RandomCountryAdapter();
         sliderAdapter = new SliderAdapter();
     }
 
@@ -80,6 +80,8 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
         categoriesRec = view.findViewById(R.id.categories_rec);
         categoryTitleOne = view.findViewById(R.id.category_one);
         categoryTitleTwo = view.findViewById(R.id.category_two);
+        countryTitleOne = view.findViewById(R.id.country_one);
+        countryTitleTwo = view.findViewById(R.id.country_two);
 
         recentRec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
         category1Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
@@ -107,10 +109,8 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
 //        recentRec.setAdapter(recentViewAdapter);
         category1Rec.setAdapter(randomCategoryAdapterOne);
         category2Rec.setAdapter(randomCategoryAdapterTwo);
-//        country1Adapter = new Country1Adapter(meals,mealsPhotos);
-//        country1Rec.setAdapter(country1Adapter);
-//        country2Adapter = new Country2Adapter(meals,mealsPhotos);
-//        country2Rec.setAdapter(country2Adapter);
+        country1Rec.setAdapter(randomCountryAdapterOne);
+        country2Rec.setAdapter(randomCountryAdapterTwo);
 //        countriesAdapter = new CountriesAdapter(meals,mealsPhotos);
 //        countriesRec.setAdapter(countriesAdapter);
 //        categoriesAdapter = new CategoriesAdapter(meals,mealsPhotos);
@@ -149,5 +149,16 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
         categoryTitleTwo.setText(categoryNames.get(1));
         randomCategoryAdapterTwo.setCategoryModel(categoryMeals.get(1));
         randomCategoryAdapterTwo.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getRandomMealResponse(List<List<FilterMealModel>> countryMeals , List<String> countryNames) {
+        countryTitleOne.setText(countryNames.get(0)+" food");
+        randomCountryAdapterOne.setMealsOfCountry(countryMeals.get(0));
+        randomCountryAdapterOne.notifyDataSetChanged();
+
+        countryTitleTwo.setText(countryNames.get(1)+" food");
+        randomCountryAdapterTwo.setMealsOfCountry(countryMeals.get(1));
+        randomCountryAdapterTwo.notifyDataSetChanged();
     }
 }

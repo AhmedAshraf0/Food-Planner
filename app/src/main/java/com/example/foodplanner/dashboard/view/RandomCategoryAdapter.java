@@ -25,7 +25,7 @@ public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAd
     private Context context;
 
     public RandomCategoryAdapter() {
-        this.categoryModel = new ArrayList<>();
+        categoryModel = new ArrayList<>();
     }
 
 
