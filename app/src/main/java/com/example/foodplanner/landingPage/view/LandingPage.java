@@ -10,16 +10,31 @@ import android.widget.TextView;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.login_screen.view.LoginScreenController;
+import com.example.foodplanner.main_activity.view.MainActivity;
 import com.example.foodplanner.sign_up.view.SignUp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LandingPage extends AppCompatActivity {
     Button sign_up;
     TextView sign_in;
     Intent intent;
+    private FirebaseAuth mAuth;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            intent = new Intent(LandingPage.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing_page);
+        mAuth = FirebaseAuth.getInstance();
         setSign_upBtnAction();
         setSignInTextViewAction();
     }
