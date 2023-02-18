@@ -175,30 +175,6 @@
             app:layout_constraintTop_toBottomOf="@+id/country_one_rec" />
 
         <TextView
-            android:id="@+id/seeAllTv6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintHorizontal_bias="1.0"
-            android:text="@string/seeAll"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/categories"
-            app:layout_constraintTop_toBottomOf="@+id/country_two_rec" />
-
-        <TextView
-            android:id="@+id/seeAllTv7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintHorizontal_bias="1.0"
-            android:text="@string/seeAll"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/countries"
-            app:layout_constraintTop_toBottomOf="@+id/categories_rec" />
-
-        <TextView
             android:id="@+id/seeAllTv3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

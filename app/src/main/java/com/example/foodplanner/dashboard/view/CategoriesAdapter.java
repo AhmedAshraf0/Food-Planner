@@ -1,5 +1,6 @@
 package com.example.foodplanner.dashboard.view;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,45 +14,26 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.network.models.CategoryModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
-    List<String> meals;
-    List<Integer> mealsPhotos;
-
-    public CategoriesAdapter(List<String> meals, List<Integer> mealsPhotos) {
-        this.meals = meals;
-        this.mealsPhotos = mealsPhotos;
+    private List<CategoryModel> categories;
+    public CategoriesAdapter() {
+        categories = new ArrayList<>();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
-        private ImageView mealImage;
-        private ImageButton favBtn;
-        private TextView mealTitle;
-        private Button addBtn;
+        private TextView categoryTitle;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mealImage = itemView.findViewById(R.id.mealImage);
-            favBtn = itemView.findViewById(R.id.buttonF);
-            mealTitle = itemView.findViewById(R.id.mealTitle);
-            addBtn = itemView.findViewById(R.id.addToScedule);
-        }
-
-        public ImageView getMealImage() {
-            return mealImage;
-        }
-
-        public ImageButton getFavBtn() {
-            return favBtn;
+            categoryTitle = itemView.findViewById(R.id.category_name);
         }
 
         public TextView getMealTitle() {
-            return mealTitle;
-        }
-
-        public Button getAddBtn() {
-            return addBtn;
+            return categoryTitle;
         }
     }
 
@@ -60,22 +42,24 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater= LayoutInflater.from(parent.getContext());
-        View currentView = layoutInflater.inflate(R.layout.meal_cardview,parent,false);
+        View currentView = layoutInflater.inflate(R.layout.category_card,parent,false);
         ViewHolder viewHolder = new ViewHolder(currentView);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getMealImage().setImageResource(mealsPhotos.get(position));
-        holder.getMealTitle().setText(meals.get(position));
-        holder.getAddBtn().setOnClickListener(v -> {
+        holder.getMealTitle().setText(categories.get(position).getStrCategory());
+        holder.getMealTitle().setOnClickListener(v -> {
             Log.i("TAG","pressed from Breakfast--------");
         });
     }
 
     @Override
     public int getItemCount() {
-        return meals.size();
+        return categories.size();
+    }
+    public void setCategories(List<CategoryModel> categories){
+        this.categories = categories;
     }
 }

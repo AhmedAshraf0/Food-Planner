@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -19,13 +20,16 @@ import android.widget.TextView;
 import com.example.foodplanner.R;
 import com.example.foodplanner.dashboard.presenter.CommunicatorHome;
 import com.example.foodplanner.dashboard.presenter.PresenterHome;
+import com.example.foodplanner.models.CountryData;
 import com.example.foodplanner.network.ClientRetrofit;
 import com.example.foodplanner.network.models.CategoryModel;
 import com.example.foodplanner.network.models.CountryModel;
 import com.example.foodplanner.network.models.FilterMealModel;
 import com.example.foodplanner.network.models.MealModel;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeFragment extends Fragment implements CommunicatorHome {
     private static final String TAG = "HomeFragment";
@@ -58,6 +62,8 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
         randomCategoryAdapterTwo = new RandomCategoryAdapter();
         randomCountryAdapterOne = new RandomCountryAdapter();
         randomCountryAdapterTwo = new RandomCountryAdapter();
+        categoriesAdapter = new CategoriesAdapter();
+        countriesAdapter = new CountriesAdapter();
         sliderAdapter = new SliderAdapter();
     }
 
@@ -88,8 +94,8 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
         category2Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
         country1Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
         country2Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
-        countriesRec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
         categoriesRec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        countriesRec.setLayoutManager(new GridLayoutManager(view.getContext(),3));
 
         viewPager2.setAdapter(sliderAdapter);
         viewPager2.setClipToPadding(false);
@@ -111,10 +117,8 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
         category2Rec.setAdapter(randomCategoryAdapterTwo);
         country1Rec.setAdapter(randomCountryAdapterOne);
         country2Rec.setAdapter(randomCountryAdapterTwo);
-//        countriesAdapter = new CountriesAdapter(meals,mealsPhotos);
-//        countriesRec.setAdapter(countriesAdapter);
-//        categoriesAdapter = new CategoriesAdapter(meals,mealsPhotos);
-//        categoriesRec.setAdapter(categoriesAdapter);
+        categoriesRec.setAdapter(categoriesAdapter);
+        countriesRec.setAdapter(countriesAdapter);
     }
 
     @Override
@@ -123,12 +127,16 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
 //        System.out.println(body.getStrIngredient1());
         this.allCategories = allCategories;
         Log.i(TAG, "getCategoryResponse: "+allCategories.size());
+        categoriesAdapter.setCategories(allCategories);
+        categoriesAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void getCountryResponse(List<CountryModel> allCountries) {
         this.allCountries = allCountries;
         Log.i(TAG, "getCountryResponse: "+allCountries.size());
+        countriesAdapter.setCountries(allCountries);
+        countriesAdapter.notifyDataSetChanged();
     }
 
     @Override

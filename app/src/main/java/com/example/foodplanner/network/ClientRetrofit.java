@@ -156,13 +156,13 @@ public class ClientRetrofit implements RemoteDataSource {
 
                     //get meals for second country
                     Observable<List<FilterMealModel>> observableCountryMeals2 = apiInterface
-                            .getMealsOfCountry(countries.get((randomCategory + 1) % (countries.size() - 1)).getStrArea())
+                            .getMealsOfCountry(countries.get((randomCountry + 1) % (countries.size() - 1)).getStrArea())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .map(i->i.getMeals());
                     observableCountryMeals2.subscribe(
                             filterMealModels -> {
-                                countryNames.add(countries.get((randomCategory + 1) % (countries.size() - 1)).getStrArea());
+                                countryNames.add(countries.get((randomCountry + 1) % (countries.size() - 1)).getStrArea());
                                 Log.i(TAG, "callApi: S-2 -getAllCountries()->getMealsOfcountry() "+filterMealModels.size());
                                 twoRandomMeals.add(filterMealModels);
                             },
