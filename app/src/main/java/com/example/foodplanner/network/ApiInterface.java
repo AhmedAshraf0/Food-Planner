@@ -27,12 +27,12 @@ public interface ApiInterface {
     //---filtering---
     //get meals by country
     @GET("filter.php")
-    Observable<GenericFilterModel> getMealsOfCountry(@Query("a") String country);
+    Single<GenericFilterModel> getMealsOfCountry(@Query("a") String country);
 
     //----requesting data---
     //get meals by category
     @GET("filter.php")
-    Observable<GenericFilterModel> getMealsOfCategory(@Query("c") String category);
+    Single<GenericFilterModel> getMealsOfCategory(@Query("c") String category);
 
     //get meals by ingredient
     @GET("filter.php")

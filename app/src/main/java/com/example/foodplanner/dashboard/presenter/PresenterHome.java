@@ -23,6 +23,14 @@ public class PresenterHome implements NetworkDeligate{
         remoteDataSource.callApi(this);
     }
 
+     public void getCategory(String categoryName , int categoryNumber){
+         remoteDataSource.requestMealsOfCategory(this,categoryName , categoryNumber);
+     }
+
+     public void getCountry(String countryName , int countryNumber){
+        remoteDataSource.requestMealsOfCountry(this,countryName,countryNumber);
+     }
+
     @Override
     public void setCategoryResponse(List<CategoryModel> allCategories) {
         communicatorHome.getCategoryResponse(allCategories);
@@ -40,12 +48,13 @@ public class PresenterHome implements NetworkDeligate{
     }
 
     @Override
-    public void setCategoryMeals(List<List<FilterMealModel>> categoryMeals , List<String> categoryNames) {
-        communicatorHome.getCategoryMeals(categoryMeals , categoryNames);
+    public void setCategoryMeals(List<FilterMealModel> categoryMeals, String categoryName , int categoryNumber) {
+        communicatorHome.getCategoryMeals(categoryMeals,categoryName,categoryNumber);
     }
 
     @Override
-    public void setRandomMealResponse(List<List<FilterMealModel>> countryMeals , List<String> countryNames) {
-        communicatorHome.getRandomMealResponse(countryMeals,countryNames);
+    public void setCountryMeals(List<FilterMealModel> countryMeals, String countryName, int countryNumber) {
+        communicatorHome.getCountryMeals(countryMeals,countryName,countryNumber);
     }
+
 }

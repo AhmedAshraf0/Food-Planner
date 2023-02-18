@@ -33,9 +33,9 @@ import java.util.Map;
 
 public class HomeFragment extends Fragment implements CommunicatorHome {
     private static final String TAG = "HomeFragment";
+    private PresenterHome presenterHome;
     private ViewPager2 viewPager2;
-    private RecyclerView recentRec , category1Rec , category2Rec , country1Rec , country2Rec , categoriesRec, countriesRec;
-    private RecentViewAdapter recentViewAdapter;
+    private RecyclerView  category1Rec , category2Rec , country1Rec , country2Rec , categoriesRec, countriesRec;
     private TextView categoryTitleOne, categoryTitleTwo , countryTitleOne , countryTitleTwo;
     private RandomCategoryAdapter randomCategoryAdapterOne, randomCategoryAdapterTwo;
     private RandomCountryAdapter randomCountryAdapterOne , randomCountryAdapterTwo;
@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        PresenterHome presenterHome = new PresenterHome(ClientRetrofit.getInstance() , this);
+        presenterHome = new PresenterHome(ClientRetrofit.getInstance() , this);
         presenterHome.getMeals();
         randomCategoryAdapterOne = new RandomCategoryAdapter();
         randomCategoryAdapterTwo = new RandomCategoryAdapter();
@@ -77,7 +77,6 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewPager2 = view.findViewById(R.id.viewPager);
-        recentRec = view.findViewById(R.id.recentRec);
         category1Rec = view.findViewById(R.id.category_one_rec);
         category2Rec = view.findViewById(R.id.category_two_rec);
         country1Rec=  view.findViewById(R.id.country_one_rec);
@@ -89,7 +88,6 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
         countryTitleOne = view.findViewById(R.id.country_one);
         countryTitleTwo = view.findViewById(R.id.country_two);
 
-        recentRec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
         category1Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
         category2Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
         country1Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
@@ -111,8 +109,6 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
             }
         });
 
-//        recentViewAdapter = new RecentViewAdapter(meals,mealsPhotos,getFragmentManager());
-//        recentRec.setAdapter(recentViewAdapter);
         category1Rec.setAdapter(randomCategoryAdapterOne);
         category2Rec.setAdapter(randomCategoryAdapterTwo);
         country1Rec.setAdapter(randomCountryAdapterOne);
@@ -124,19 +120,38 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     @Override
     public void getCategoryResponse(List<CategoryModel> allCategories) {
         //haaaaa7777
-//        System.out.println(body.getStrIngredient1());
         this.allCategories = allCategories;
-        Log.i(TAG, "getCategoryResponse: "+allCategories.size());
         categoriesAdapter.setCategories(allCategories);
         categoriesAdapter.notifyDataSetChanged();
+
+        //get 2 random meals of categories
+        //calc randomNumber->send categoryName
+        int randomCategory = (int) (Math.random() * (allCategories.size() - 1));
+        randomCategory %= (allCategories.size() - 1);//not out of bounds
+
+        //first category
+        presenterHome.getCategory(allCategories.get(randomCategory).getStrCategory(),1);
+        randomCategory = (randomCategory + 1) % (allCategories.size() - 1);
+        //second category
+        presenterHome.getCategory(allCategories.get(randomCategory).getStrCategory(),2);
     }
 
     @Override
     public void getCountryResponse(List<CountryModel> allCountries) {
         this.allCountries = allCountries;
-        Log.i(TAG, "getCountryResponse: "+allCountries.size());
         countriesAdapter.setCountries(allCountries);
         countriesAdapter.notifyDataSetChanged();
+
+        //get 2 random meals of countries
+        //calc randomNumber->send countryName
+        int randomCountry = (int) (Math.random() * (allCountries.size() - 1));
+        randomCountry %= (allCountries.size() - 1);//not out of bounds
+
+        //first country
+        presenterHome.getCountry(allCountries.get(randomCountry).getStrArea(),1);
+        randomCountry = (randomCountry + 1) % (allCountries.size() - 1);
+        //second country
+        presenterHome.getCountry(allCountries.get(randomCountry).getStrArea(),2);
     }
 
     @Override
@@ -148,25 +163,41 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     }
 
     @Override
-    public void getCategoryMeals(List<List<FilterMealModel>> categoryMeals , List<String> categoryNames) {
-        categoriesMeals = categoryMeals;
-        categoryTitleOne.setText(categoryNames.get(0));
-        randomCategoryAdapterOne.setCategoryModel(categoryMeals.get(0));
-        randomCategoryAdapterOne.notifyDataSetChanged();
-
-        categoryTitleTwo.setText(categoryNames.get(1));
-        randomCategoryAdapterTwo.setCategoryModel(categoryMeals.get(1));
-        randomCategoryAdapterTwo.notifyDataSetChanged();
+    public void getCategoryMeals(List<FilterMealModel> categoryMeals, String categoryName , int categoryNumber) {
+        switch (categoryNumber){
+            case 1:
+                categoryTitleOne.setText(categoryName);
+                randomCategoryAdapterOne.setCategoryModel(categoryMeals);
+                randomCategoryAdapterOne.notifyDataSetChanged();
+                break;
+            case 2:
+                categoryTitleTwo.setText(categoryName);
+                randomCategoryAdapterTwo.setCategoryModel(categoryMeals);
+                randomCategoryAdapterTwo.notifyDataSetChanged();
+                break;
+            default:
+                Log.i(TAG, "getCategoryMeals: error");
+                break;
+        }
     }
 
     @Override
-    public void getRandomMealResponse(List<List<FilterMealModel>> countryMeals , List<String> countryNames) {
-        countryTitleOne.setText(countryNames.get(0)+" food");
-        randomCountryAdapterOne.setMealsOfCountry(countryMeals.get(0));
-        randomCountryAdapterOne.notifyDataSetChanged();
-
-        countryTitleTwo.setText(countryNames.get(1)+" food");
-        randomCountryAdapterTwo.setMealsOfCountry(countryMeals.get(1));
-        randomCountryAdapterTwo.notifyDataSetChanged();
+    public void getCountryMeals(List<FilterMealModel> countryMeals, String countryName, int countryNumber) {
+        Log.i(TAG, "getCountryMeals: here");
+        switch (countryNumber){
+            case 1:
+                countryTitleOne.setText(countryName+" food");
+                randomCountryAdapterOne.setMealsOfCountry(countryMeals);
+                randomCountryAdapterOne.notifyDataSetChanged();
+                break;
+            case 2:
+                countryTitleTwo.setText(countryName+" food");
+                randomCountryAdapterTwo.setMealsOfCountry(countryMeals);
+                randomCountryAdapterTwo.notifyDataSetChanged();
+                break;
+            default:
+                Log.i(TAG, "getCountryMeals: error");
+                break;
+        }
     }
 }

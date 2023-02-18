@@ -12,6 +12,6 @@ public interface NetworkDeligate {
     void setCategoryResponse(List<CategoryModel> allCategories);
     void setCountryResponse(List<CountryModel> allCountries);
     void setRandomMealsResponse(List<MealModel> randomMeals);
-    void setCategoryMeals(List<List<FilterMealModel>> categoryMeals , List<String> categoryNames);
-    void setRandomMealResponse(List<List<FilterMealModel>> countryMeals , List<String> countryNames);
+    void setCategoryMeals(List<FilterMealModel> categoryMeals , String categoryName , int categoryNumber);
+    void setCountryMeals(List<FilterMealModel> countryMeals , String countryName , int countryNumber);
 }

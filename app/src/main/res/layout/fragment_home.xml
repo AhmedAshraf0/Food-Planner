@@ -40,20 +40,6 @@
         </androidx.viewpager2.widget.ViewPager2>
 
         <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/recently"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.18"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/viewPager" />
-
-        <TextView
             android:id="@+id/category_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,9 +49,9 @@
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.131"
+            app:layout_constraintHorizontal_bias="0.18"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recentRec" />
+            app:layout_constraintTop_toBottomOf="@+id/viewPager" />
 
         <TextView
             android:id="@+id/category_two"
@@ -184,19 +170,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/category_one"
-            app:layout_constraintTop_toBottomOf="@+id/recentRec" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recentRec"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.18"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@+id/viewPager" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/category_one_rec"
