@@ -18,8 +18,10 @@ import com.example.foodplanner.main_activity.view.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 
 public class SignUp extends AppCompatActivity {
@@ -77,7 +79,12 @@ public class SignUp extends AppCompatActivity {
                     else if (password.isEmpty()) {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(SignUp.this, "Enter your password", Toast.LENGTH_SHORT).show();
-                    } else if (!password.equals(confirm)) {
+                    } else if (password.length() <8){
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(SignUp.this, "weak password,it should contains at least eight character.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                    else if (!password.equals(confirm)) {
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(SignUp.this, "Password not identical", Toast.LENGTH_SHORT).show();
                     }else{
@@ -90,10 +97,14 @@ public class SignUp extends AppCompatActivity {
                                         Intent intent = new Intent(getApplicationContext(), LoginScreenController.class);
                                         startActivity(intent);
                                         finish();
-                                    } else {
-                                        // If sign in fails, display a message to the user.
-                                        Toast.makeText(SignUp.this, "weak password,it should contains at least eight character.",
-                                                Toast.LENGTH_LONG).show();
+                                    }else {
+                                        Exception exception = task.getException();
+                                        if (exception == null) {
+                                            Toast.makeText(SignUp.this, "UnExpected error occurred", Toast.LENGTH_SHORT).show();
+                                        }
+                                        else {
+                                            Toast.makeText(SignUp.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
                                     }
                                 }
                             });
