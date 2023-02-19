@@ -35,4 +35,6 @@
     <string name="landingMsg">Watch,save,plan,and make the recipe by yourself.</string>
     <string name="already_registered">Already registered..?</string>
     <string name="tv_signIn_register"><u>Sign In</u>.</string>
+    <string name="sign_anontmously">"Or you can sign "</string>
+    <string name="anonymously"><u>Anonymously</u>.</string>
 </resources>
