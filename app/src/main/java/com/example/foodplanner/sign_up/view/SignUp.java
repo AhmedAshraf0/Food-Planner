@@ -84,10 +84,12 @@ public class SignUp extends AppCompatActivity {
                         Toast.makeText(SignUp.this, "weak password,it should contains at least eight character.",
                                 Toast.LENGTH_LONG).show();
                     }
-                    else if (!password.equals(confirm)) {
+                    else if (!password.equals(confirm)){
                         progressBar.setVisibility(View.GONE);
                         Toast.makeText(SignUp.this, "Password not identical", Toast.LENGTH_SHORT).show();
-                    }else{
+                    }
+                    else{
+
                     mAuth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override

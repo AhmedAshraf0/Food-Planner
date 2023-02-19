@@ -48,6 +48,7 @@ public class LoginScreenController extends AppCompatActivity {
     private Intent intent;
     private static final int RC_SIGN_IN = 100;
     private GoogleSignInClient googleSignInClient;
+    TextView tv_anonymously;
 //    @Override
 //    protected void onStart() {
 //        super.onStart();
@@ -66,6 +67,7 @@ public class LoginScreenController extends AppCompatActivity {
         setTv_signUpAction();
         setBtnSignInAction();
         setBtnGoogleSignInAction();
+        setTv_anonymouslyAction();
     }
     void setTv_signUpAction(){
        tv_signUp = findViewById(R.id.tv_signUp);
@@ -82,6 +84,7 @@ public class LoginScreenController extends AppCompatActivity {
         et_email = findViewById(R.id.et_email_signIn);
         et_password = findViewById(R.id.et_signUpPassword);
         progressBar = findViewById(R.id.progressBarSignUp);
+        tv_anonymously = findViewById(R.id.tv_anonymously);
         checkConnection = CheckConnection.getInstance(LoginScreenController.this);
         mAuth = FirebaseAuth.getInstance();
     }
@@ -208,6 +211,16 @@ public class LoginScreenController extends AppCompatActivity {
                             }
                         }
                 });
+    }
+    private void setTv_anonymouslyAction(){
+        tv_anonymously.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(LoginScreenController.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
 

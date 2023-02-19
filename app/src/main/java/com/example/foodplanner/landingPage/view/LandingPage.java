@@ -20,16 +20,16 @@ public class LandingPage extends AppCompatActivity {
     TextView sign_in;
     Intent intent;
     private FirebaseAuth mAuth;
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            intent = new Intent(LandingPage.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if(currentUser != null){
+//            intent = new Intent(LandingPage.this, MainActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +57,6 @@ public class LandingPage extends AppCompatActivity {
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), LoginScreenController.class);
                 startActivity(intent);
-                finish();
             }
         });
     }
