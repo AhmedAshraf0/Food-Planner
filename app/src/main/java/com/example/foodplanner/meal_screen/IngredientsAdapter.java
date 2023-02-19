@@ -3,25 +3,22 @@ package com.example.foodplanner.meal_screen;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
-import com.example.foodplanner.dashboard.view.CategoriesAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.ViewHolder> {
-    List<String> measures , ingredentNames;
+    List<String> measures , ingredientNames;
 
-    public IngredientsAdapter(List<String> measures, List<String> ingredentNames) {
-        this.measures = measures;
-        this.ingredentNames = ingredentNames;
+    public IngredientsAdapter() {
+        measures = new ArrayList<>();
+        ingredientNames = new ArrayList<>();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -53,11 +50,16 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getMeasure().setText(measures.get(position));
-        holder.getIngredients().setText(ingredentNames.get(position));
+        holder.getIngredients().setText(ingredientNames.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return measures.size();
+        return Math.min(measures.size(),ingredientNames.size());
+    }
+
+    public void setLists(List<String> measures , List<String> ingredientNames){
+        this.measures = measures;
+        this.ingredientNames = ingredientNames;
     }
 }

@@ -10,6 +10,7 @@ import com.example.foodplanner.network.models.CategoryModel;
 import com.example.foodplanner.network.models.CountryModel;
 import com.example.foodplanner.network.models.FilterMealModel;
 import com.example.foodplanner.network.models.MealModel;
+import com.example.foodplanner.network.models.SearchModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +129,22 @@ public class ClientRetrofit implements RemoteDataSource {
                     networkDeligate.setCountryMeals(filterMealModels,countryName,countryNumber);
                 },
                 e -> Log.i(TAG, "callApi: E-requestMealsOfCountry()"+ countryNumber + "  " + e.getMessage())
+        );
+    }
+
+    @Override
+    public void requestMealDetails(NetworkDeligate networkDeligate , int mealId) {
+        Single<List<MealModel>> observable = apiInterface
+                .getMealById(mealId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(i->i.getMeals());
+        observable.subscribe(
+                mealModels -> {
+                    Log.i(TAG, "callApi: S-requestMealDetails() "+mealModels.get(0).getStrMeal());
+                    networkDeligate.setMealDetails(mealModels.get(0));
+                },
+                e-> Log.i(TAG, "callApi: E-requestMealDetails(): "+e.getMessage())
         );
     }
 }

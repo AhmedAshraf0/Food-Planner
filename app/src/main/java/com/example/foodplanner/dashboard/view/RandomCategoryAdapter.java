@@ -1,5 +1,6 @@
 package com.example.foodplanner.dashboard.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,13 +24,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAdapter.ViewHolder> {
+    private OnCardClickListener onCardClickListener;
     private List<FilterMealModel> filterMealModel;
     private TextView categoryTitleOne, categoryTitleTwo;
     public static String category1 , category2;
     private Context context;
 
-    public RandomCategoryAdapter() {
+    public RandomCategoryAdapter(OnCardClickListener onCardClickListener) {
         filterMealModel = new ArrayList<>();
+        this.onCardClickListener = onCardClickListener;
     }
 
 
@@ -81,7 +84,7 @@ public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Glide.with(context).load(filterMealModel.get(position).getStrMealThumb()+"/preview")
                 .override(150,150)
                 .into(holder.getMealImage());
@@ -93,7 +96,9 @@ public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAd
             @Override
             public void onClick(View v) {
                 Log.i("TAG", "onClick: pressed");
-                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_mealFragment);
+                onCardClickListener.onCardClickActor(Integer.parseInt(filterMealModel.get(position).getIdMeal()));
+//                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_mealActivity);
+
                 //1.request to api to get mealdetails
                 //2.navigate to mealScreen
                 //3.send mealDetails there

@@ -1,5 +1,6 @@
 package com.example.foodplanner.dashboard.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,8 @@ import android.widget.TextView;
 import com.example.foodplanner.R;
 import com.example.foodplanner.dashboard.presenter.CommunicatorHome;
 import com.example.foodplanner.dashboard.presenter.PresenterHome;
+import com.example.foodplanner.meal_screen.MealActivity;
+import com.example.foodplanner.meal_screen.MealFragment;
 import com.example.foodplanner.network.ClientRetrofit;
 import com.example.foodplanner.network.models.CategoryModel;
 import com.example.foodplanner.network.models.CountryModel;
@@ -29,7 +32,7 @@ import com.example.foodplanner.network.models.MealModel;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment implements CommunicatorHome {
+public class HomeFragment extends Fragment implements CommunicatorHome  , OnCardClickListener{
     private static final String TAG = "HomeFragment";
     private PresenterHome presenterHome;
     private ViewPager2 viewPager2;
@@ -45,6 +48,7 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     private List<CountryModel> allCountries;
     private List<MealModel> randomMeals;
     private Handler sliderHandler;
+    private MealModel mealDetails;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -55,9 +59,10 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         sliderHandler = new Handler();
-        randomCategoryAdapterOne = new RandomCategoryAdapter();
-        randomCategoryAdapterTwo = new RandomCategoryAdapter();
+        randomCategoryAdapterOne = new RandomCategoryAdapter(this);
+        randomCategoryAdapterTwo = new RandomCategoryAdapter(this);
         randomCountryAdapterOne = new RandomCountryAdapter();
         randomCountryAdapterTwo = new RandomCountryAdapter();
         categoriesAdapter = new CategoriesAdapter();
@@ -161,6 +166,11 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     }
 
     @Override
+    public void onCardClickActor(int mealId) {
+        presenterHome.requestMealDetails(mealId);
+    }
+
+    @Override
     public void getRandomMealsResponse(List<MealModel> randomMeals) {
         this.randomMeals = randomMeals;
         Log.i(TAG, "random meals: "+randomMeals.size());
@@ -207,5 +217,22 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
                 Log.i(TAG, "getCountryMeals: error");
                 break;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState: ");
+        outState.putSerializable("mealData",mealDetails);
+    }
+
+    @Override
+    public void getMealDetails(MealModel mealDetails) {
+        Log.i(TAG, "getMealDetails: "+mealDetails.getStrCategory());
+        this.mealDetails = mealDetails;
+        Intent i = new Intent(this.requireContext(), MealActivity.class);
+        i.putExtra("meal",mealDetails);
+        startActivity(i);
+//        mealFragment.dataIsHere();
     }
 }
