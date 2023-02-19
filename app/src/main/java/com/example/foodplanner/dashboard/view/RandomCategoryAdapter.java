@@ -26,7 +26,6 @@ import java.util.List;
 public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAdapter.ViewHolder> {
     private OnCardClickListener onCardClickListener;
     private List<FilterMealModel> filterMealModel;
-    private TextView categoryTitleOne, categoryTitleTwo;
     public static String category1 , category2;
     private Context context;
 
@@ -92,17 +91,9 @@ public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAd
         holder.getAddBtn().setOnClickListener(v -> {
             Log.i("TAG","pressed from seafood--------");
         });
-        holder.getCard().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("TAG", "onClick: pressed");
-                onCardClickListener.onCardClickActor(Integer.parseInt(filterMealModel.get(position).getIdMeal()));
-//                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_mealActivity);
-
-                //1.request to api to get mealdetails
-                //2.navigate to mealScreen
-                //3.send mealDetails there
-            }
+        holder.getCard().setOnClickListener(v -> {
+            Log.i("TAG", "onClick: pressed");
+            onCardClickListener.onCardClickActor(Integer.parseInt(filterMealModel.get(position).getIdMeal()));
         });
     }
 

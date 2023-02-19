@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,12 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RandomCountryAdapter extends RecyclerView.Adapter<RandomCountryAdapter.ViewHolder> {
+    private OnCardClickListener onCardClickListener;
     private List<FilterMealModel> filterMealModel;
     private Context context;
     public static String country1, country2;
 
-    public RandomCountryAdapter() {
+    public RandomCountryAdapter(OnCardClickListener onCardClickListener) {
         filterMealModel = new ArrayList<>();
+        this.onCardClickListener = onCardClickListener;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
@@ -34,12 +37,14 @@ public class RandomCountryAdapter extends RecyclerView.Adapter<RandomCountryAdap
         private ImageButton favBtn;
         private TextView mealTitle;
         private Button addBtn;
+        private CardView card;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.mealImage);
             favBtn = itemView.findViewById(R.id.buttonF);
             mealTitle = itemView.findViewById(R.id.mealTitle);
             addBtn = itemView.findViewById(R.id.addToScedule);
+            card = itemView.findViewById(R.id.mealCardView);
         }
 
         public ImageView getMealImage() {
@@ -56,6 +61,9 @@ public class RandomCountryAdapter extends RecyclerView.Adapter<RandomCountryAdap
 
         public Button getAddBtn() {
             return addBtn;
+        }
+        public CardView getCard() {
+            return card;
         }
     }
 
@@ -78,6 +86,15 @@ public class RandomCountryAdapter extends RecyclerView.Adapter<RandomCountryAdap
         holder.getMealTitle().setText(filterMealModel.get(position).getStrMeal());
         holder.getAddBtn().setOnClickListener(v -> {
             Log.i("TAG","pressed from Breakfast--------");
+        });
+        holder.getCard().setOnClickListener(v -> {
+            Log.i("TAG", "onClick: pressed");
+            onCardClickListener.onCardClickActor(Integer.parseInt(filterMealModel.get(position).getIdMeal()));
+//                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_mealActivity);
+
+            //1.request to api to get mealdetails
+            //2.navigate to mealScreen
+            //3.send mealDetails there
         });
     }
 

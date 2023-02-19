@@ -16,7 +16,6 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.dashboard.view.HomeFragment;
 import com.example.foodplanner.databinding.ActivityMainBinding;
 import com.example.foodplanner.favorites.FavoriteFragment;
-import com.example.foodplanner.meal_screen.MealFragment;
 import com.example.foodplanner.planner.PlannerFragment;
 import com.example.foodplanner.search.SearchFragment;
 import com.example.foodplanner.setting.SettingFragment;

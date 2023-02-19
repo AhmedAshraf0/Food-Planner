@@ -16,11 +16,6 @@
         android:label="Home"
         tools:layout="@layout/fragment_home"/>
     <fragment
-        android:id="@+id/mealFragment"
-        android:name="com.example.foodplanner.meal_screen.MealFragment"
-        android:label="Meal Details"
-        tools:layout="@layout/fragment_meal"/>
-    <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.foodplanner.favorites.FavoriteFragment"
         android:label="Favorites"

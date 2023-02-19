@@ -1,6 +1,7 @@
 package com.example.foodplanner.dashboard.view;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -21,20 +23,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderViewHolder>{
+    private static final String TAG = "Slider Adapter --";
+    private OnSliderItemClicked onSliderItemClicked;
     private List<MealModel> randomMeals;
     private Context context;
 
-    public SliderAdapter() {
+    public SliderAdapter(OnSliderItemClicked onSliderItemClicked) {
         randomMeals = new ArrayList<>();
+        this.onSliderItemClicked = onSliderItemClicked;
     }
     class SliderViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView;
         private TextView textView;
+        private CardView card;
 
         public SliderViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             textView = itemView.findViewById(R.id.tvHeading);
+            card = itemView.findViewById(R.id.sliderCard);
         }
 
         public ImageView getImageView() {
@@ -43,6 +50,10 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
 
         public TextView getTextView() {
             return textView;
+        }
+
+        public CardView getCard() {
+            return card;
         }
     }
 
@@ -62,6 +73,10 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.SliderView
         Glide.with(context).load(randomMeals.get(position).getStrMealThumb())
                 .into(holder.getImageView());
         holder.getTextView().setText(randomMeals.get(position).getStrMeal());
+        holder.getCard().setOnClickListener(v -> {
+            Log.i(TAG, "onClick: pressed");
+            onSliderItemClicked.sliderItemClicked(randomMeals.get(position));
+        });
     }
 
     @Override

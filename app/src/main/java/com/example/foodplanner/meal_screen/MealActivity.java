@@ -42,45 +42,45 @@ public class MealActivity extends AppCompatActivity {
         meal = (MealModel) getIntent().getExtras().get("meal");
 
         //preparing ingredients & measures lists
-        if (!meal.getStrIngredient1().equals("")) {
+        if (!meal.getStrIngredient1().equals(null)&&!meal.getStrIngredient1().equals("")) {
             listIngredients.add(meal.getStrIngredient1());
-            if (!meal.getStrIngredient2().equals("")) {
+            if (meal.getStrIngredient2() != null &&!meal.getStrIngredient2().equals("")) {
                 listIngredients.add(meal.getStrIngredient2());
-                if (!meal.getStrIngredient3().equals("")) {
+                if (meal.getStrIngredient3() != null &&!meal.getStrIngredient3().equals("")) {
                     listIngredients.add(meal.getStrIngredient3());
-                    if (!meal.getStrIngredient4().equals("")) {
+                    if (meal.getStrIngredient4() != null &&!meal.getStrIngredient4().equals("")) {
                         listIngredients.add(meal.getStrIngredient4());
-                        if (!meal.getStrIngredient5().equals("")) {
+                        if (meal.getStrIngredient5() != null &&!meal.getStrIngredient5().equals("")) {
                             listIngredients.add(meal.getStrIngredient5());
-                            if (!meal.getStrIngredient6().equals("")) {
+                            if (meal.getStrIngredient6() != null &&!meal.getStrIngredient6().equals("")) {
                                 listIngredients.add(meal.getStrIngredient6());
-                                if (!meal.getStrIngredient7().equals("")) {
+                                if (meal.getStrIngredient7() != null &&!meal.getStrIngredient7().equals("")) {
                                     listIngredients.add(meal.getStrIngredient7());
-                                    if (!meal.getStrIngredient8().equals("")) {
+                                    if (meal.getStrIngredient8() != null &&!meal.getStrIngredient8().equals("")) {
                                         listIngredients.add(meal.getStrIngredient8());
-                                        if (!meal.getStrIngredient9().equals("")) {
+                                        if (meal.getStrIngredient9() != null &&!meal.getStrIngredient9().equals("")) {
                                             listIngredients.add(meal.getStrIngredient9());
-                                            if (!meal.getStrIngredient10().equals("")) {
+                                            if (meal.getStrIngredient10() != null &&!meal.getStrIngredient10().equals("")) {
                                                 listIngredients.add(meal.getStrIngredient10());
-                                                if (!meal.getStrIngredient11().equals("")) {
+                                                if (meal.getStrIngredient11() != null &&!meal.getStrIngredient11().equals("")) {
                                                     listIngredients.add(meal.getStrIngredient11());
-                                                    if (!meal.getStrIngredient12().equals("")) {
+                                                    if (meal.getStrIngredient12() != null &&!meal.getStrIngredient12().equals("")) {
                                                         listIngredients.add(meal.getStrIngredient12());
-                                                        if (!meal.getStrIngredient13().equals("")) {
+                                                        if (meal.getStrIngredient13() != null &&!meal.getStrIngredient13().equals("")) {
                                                             listIngredients.add(meal.getStrIngredient13());
-                                                            if (!meal.getStrIngredient14().equals("")) {
+                                                            if (meal.getStrIngredient14() != null &&!meal.getStrIngredient14().equals("")) {
                                                                 listIngredients.add(meal.getStrIngredient14());
-                                                                if (!meal.getStrIngredient15().equals("")) {
+                                                                if (meal.getStrIngredient15() != null &&!meal.getStrIngredient15().equals("")) {
                                                                     listIngredients.add(meal.getStrIngredient15());
-                                                                    if (!meal.getStrIngredient16().equals("")) {
+                                                                    if (meal.getStrIngredient16() != null &&!meal.getStrIngredient16().equals("")) {
                                                                         listIngredients.add(meal.getStrIngredient16());
-                                                                        if (!meal.getStrIngredient17().equals("")) {
+                                                                        if (meal.getStrIngredient17() != null &&!meal.getStrIngredient17().equals("")) {
                                                                             listIngredients.add(meal.getStrIngredient17());
-                                                                            if (!meal.getStrIngredient18().equals("")) {
+                                                                            if (meal.getStrIngredient18() != null &&!meal.getStrIngredient18().equals("")) {
                                                                                 listIngredients.add(meal.getStrIngredient18());
-                                                                                if (!meal.getStrIngredient19().equals("")) {
+                                                                                if (meal.getStrIngredient19() != null &&!meal.getStrIngredient19().equals("")) {
                                                                                     listIngredients.add(meal.getStrIngredient19());
-                                                                                    if (!meal.getStrIngredient20().equals(""))
+                                                                                    if (meal.getStrIngredient20() != null &&!meal.getStrIngredient20().equals(""))
                                                                                         listIngredients.add(meal.getStrIngredient20());
                                                                                 }
                                                                             }

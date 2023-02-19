@@ -11,8 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mealConstraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".meal_screen.MealFragment" >
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/headerImage"
             android:layout_width="match_parent"

@@ -23,7 +23,6 @@ import com.example.foodplanner.R;
 import com.example.foodplanner.dashboard.presenter.CommunicatorHome;
 import com.example.foodplanner.dashboard.presenter.PresenterHome;
 import com.example.foodplanner.meal_screen.MealActivity;
-import com.example.foodplanner.meal_screen.MealFragment;
 import com.example.foodplanner.network.ClientRetrofit;
 import com.example.foodplanner.network.models.CategoryModel;
 import com.example.foodplanner.network.models.CountryModel;
@@ -32,7 +31,7 @@ import com.example.foodplanner.network.models.MealModel;
 
 import java.util.List;
 
-public class HomeFragment extends Fragment implements CommunicatorHome  , OnCardClickListener{
+public class HomeFragment extends Fragment implements CommunicatorHome  , OnCardClickListener , OnSliderItemClicked{
     private static final String TAG = "HomeFragment";
     private PresenterHome presenterHome;
     private ViewPager2 viewPager2;
@@ -63,11 +62,11 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
         sliderHandler = new Handler();
         randomCategoryAdapterOne = new RandomCategoryAdapter(this);
         randomCategoryAdapterTwo = new RandomCategoryAdapter(this);
-        randomCountryAdapterOne = new RandomCountryAdapter();
-        randomCountryAdapterTwo = new RandomCountryAdapter();
+        randomCountryAdapterOne = new RandomCountryAdapter(this);
+        randomCountryAdapterTwo = new RandomCountryAdapter(this);
         categoriesAdapter = new CategoriesAdapter();
         countriesAdapter = new CountriesAdapter();
-        sliderAdapter = new SliderAdapter();
+        sliderAdapter = new SliderAdapter(this);
     }
 
     @Override
@@ -233,6 +232,12 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
         Intent i = new Intent(this.requireContext(), MealActivity.class);
         i.putExtra("meal",mealDetails);
         startActivity(i);
-//        mealFragment.dataIsHere();
+    }
+
+    @Override
+    public void sliderItemClicked(MealModel meal) {
+        Intent i = new Intent(this.requireContext(), MealActivity.class);
+        i.putExtra("meal",meal);
+        startActivity(i);
     }
 }
