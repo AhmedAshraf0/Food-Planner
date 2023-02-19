@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -54,26 +55,36 @@ public class LoginScreenController extends AppCompatActivity implements SignInIn
     private GoogleSignInClient googleSignInClient;
     private SignInPresenter signInPresenter ;
     TextView tv_anonymously;
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser != null){
-//            intent = new Intent(LoginScreenController.this, MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-//    }
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen_controller);
+        pref = getSharedPreferences("SigningInformation",MODE_PRIVATE);
+        editor = pref.edit();
+        if (pref.getBoolean("isSignedIn",false)){
+            intent = new Intent(LoginScreenController.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
         setStartSettings();
         setTv_signUpAction();
         setBtnSignInAction();
         setBtnGoogleSignInAction();
         setTv_anonymouslyAction();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (pref.getBoolean("isSignedIn",false)){
+            intent = new Intent(LoginScreenController.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
     void setTv_signUpAction(){
        tv_signUp = findViewById(R.id.tv_signUp);
        tv_signUp.setOnClickListener(new View.OnClickListener() {
@@ -152,8 +163,11 @@ public class LoginScreenController extends AppCompatActivity implements SignInIn
         tv_anonymously.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editor.putBoolean("isSignedIn",true);
+                editor.commit();
                 intent = new Intent(LoginScreenController.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -161,28 +175,18 @@ public class LoginScreenController extends AppCompatActivity implements SignInIn
     public void onCompleteSignInWithEmailAndPassword(Task<AuthResult> task) {
                         progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
+                            editor.putBoolean("isSignedIn",true);
+                            editor.commit();
                             intent = new Intent(LoginScreenController.this, MainActivity.class);
                             startActivity(intent);
+                            finish();
                         }
                         else {
                             Exception exception = task.getException();
                             if (exception == null) {
                                 Toast.makeText(LoginScreenController.this, "UnExpected error occurred", Toast.LENGTH_SHORT).show();
                             } else {
-                                if (exception.getClass().equals(FirebaseAuthException.class)) {
-                                    if (((FirebaseAuthException) exception).getErrorCode().equals("ERROR_USER_NOT_FOUND")) {
-                                        Toast.makeText(LoginScreenController.this, "User not found", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(LoginScreenController.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                } else if (exception.getClass().equals(FirebaseNetworkException.class)) {
-                                    Toast.makeText(LoginScreenController.this, "Network error", Toast.LENGTH_SHORT).show();
-                                } else if (task.getException().getMessage().equals("There is no user record corresponding to this identifier. The user may have been deleted.")) {
-                                    Toast.makeText(LoginScreenController.this, "User not found", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(LoginScreenController.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-
+                                Toast.makeText(LoginScreenController.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
     }
@@ -193,6 +197,9 @@ public class LoginScreenController extends AppCompatActivity implements SignInIn
             @Override
             public void onSuccess(AuthResult authResult) {
                 Log.d("TAG", "onSuccess: logged in");
+                editor.putBoolean("isSignedIn",true);
+                editor.commit();
+                finish();
                 intent = new Intent(LoginScreenController.this, MainActivity.class);
                 startActivity(intent);
             }
