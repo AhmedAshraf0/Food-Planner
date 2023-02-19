@@ -115,11 +115,7 @@ public class SignUp extends AppCompatActivity implements SignUpInterface {
 
     @Override
     public void onCompleteRegisterWithEmailAndPassword(Task<AuthResult> task) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressBar.setVisibility(View.GONE);
+        progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
                             Intent intent = new Intent(getApplicationContext(), LoginScreenController.class);
                             startActivity(intent);
@@ -133,7 +129,5 @@ public class SignUp extends AppCompatActivity implements SignUpInterface {
                                 Toast.makeText(SignUp.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
-                    }
-                });
     }
 }

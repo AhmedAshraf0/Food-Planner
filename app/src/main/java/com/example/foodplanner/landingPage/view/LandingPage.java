@@ -46,7 +46,6 @@ public class LandingPage extends AppCompatActivity {
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), SignUp.class);
                 startActivity(intent);
-                finish();
             }
         });
     }

@@ -1,9 +1,11 @@
 package com.example.foodplanner.login_screen.view;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,8 @@ import android.widget.Toast;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.helper.CheckConnection;
+import com.example.foodplanner.login_screen.presenter.SignInInterface;
+import com.example.foodplanner.login_screen.presenter.SignInPresenter;
 import com.example.foodplanner.main_activity.view.MainActivity;
 import com.example.foodplanner.sign_up.view.SignUp;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,7 +40,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LoginScreenController extends AppCompatActivity {
+public class LoginScreenController extends AppCompatActivity implements SignInInterface {
     private TextInputEditText et_email;
     private TextInputEditText et_password;
     private Button btnSignIn,btnGoogleSignIn;
@@ -44,10 +48,11 @@ public class LoginScreenController extends AppCompatActivity {
     private CheckConnection checkConnection;
     private ProgressBar progressBar;
     private TextView tv_signUp;
-    private String email;
+    private String email,password;
     private Intent intent;
     private static final int RC_SIGN_IN = 100;
     private GoogleSignInClient googleSignInClient;
+    private SignInPresenter signInPresenter ;
     TextView tv_anonymously;
 //    @Override
 //    protected void onStart() {
@@ -81,12 +86,14 @@ public class LoginScreenController extends AppCompatActivity {
        });
     }
     void setStartSettings(){
+        btnGoogleSignIn = findViewById(R.id.btn_googleSignIn);
         et_email = findViewById(R.id.et_email_signIn);
         et_password = findViewById(R.id.et_signUpPassword);
         progressBar = findViewById(R.id.progressBarSignUp);
         tv_anonymously = findViewById(R.id.tv_anonymously);
         checkConnection = CheckConnection.getInstance(LoginScreenController.this);
         mAuth = FirebaseAuth.getInstance();
+        signInPresenter = new SignInPresenter(this,LoginScreenController.this);
     }
     public void setBtnSignInAction() {
         btnSignIn = findViewById(R.id.btn_signIn_login);
@@ -95,7 +102,7 @@ public class LoginScreenController extends AppCompatActivity {
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
                 email = String.valueOf(et_email.getText());
-                String password = String.valueOf(et_password.getText());
+                password = String.valueOf(et_password.getText());
                 if (checkConnection.isConnected()) {
                     if (email.isEmpty()) {
                         progressBar.setVisibility(View.GONE);
@@ -109,43 +116,7 @@ public class LoginScreenController extends AppCompatActivity {
                         Toast.makeText(LoginScreenController.this, "Enter your password", Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        mAuth.signInWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        progressBar.setVisibility(View.GONE);
-                                        if (task.isSuccessful()) {
-                                            intent = new Intent(LoginScreenController.this, MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        }
-                                        else {
-                                            Exception exception = task.getException();
-                                            if (exception == null) {
-                                                Toast.makeText(LoginScreenController.this, "UnExpected error occurred", Toast.LENGTH_SHORT).show();
-                                            }
-                                            else {
-                                                if (exception.getClass().equals(FirebaseAuthException.class)) {
-                                                    if (((FirebaseAuthException) exception).getErrorCode().equals("ERROR_USER_NOT_FOUND")) {
-                                                        Toast.makeText(LoginScreenController.this, "User not found", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                    else {
-                                                        Toast.makeText(LoginScreenController.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                    }
-                                                } else if (exception.getClass().equals(FirebaseNetworkException.class)) {
-                                                    Toast.makeText(LoginScreenController.this, "Network error", Toast.LENGTH_SHORT).show();
-                                                }
-                                                else if (task.getException().getMessage().equals("There is no user record corresponding to this identifier. The user may have been deleted.")) {
-                                                    Toast.makeText(LoginScreenController.this, "User not found", Toast.LENGTH_SHORT).show();
-                                                }
-                                                else {
-                                                    Toast.makeText(LoginScreenController.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                });
+                        signInPresenter.signIn(email,password);
                     }
                 }
                 else {
@@ -156,20 +127,14 @@ public class LoginScreenController extends AppCompatActivity {
         });
     };
     public void setBtnGoogleSignInAction(){
-        btnGoogleSignIn = findViewById(R.id.btn_googleSignIn);
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        googleSignInClient = GoogleSignIn.getClient(LoginScreenController.this,googleSignInOptions);
         btnGoogleSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkConnection.isConnected()) {
-                    Intent googleIntent = googleSignInClient.getSignInIntent();
-                    startActivityForResult(googleIntent, RC_SIGN_IN);
+                    signInPresenter.signInGoogle();
                 }else{
-
+                    Toast.makeText(LoginScreenController.this, "Turn internet on to be able to register.", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
                 }
             }
         });
@@ -177,40 +142,11 @@ public class LoginScreenController extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RC_SIGN_IN){
-            Task<GoogleSignInAccount> accountTask = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try{
-                GoogleSignInAccount account = accountTask.getResult(ApiException.class);
-                firebaseAuthWithGoogleAccount(account);
-            }catch(Exception e){
-                Log.i("TAG",e.getMessage());
-            }
+        if(requestCode == RC_SIGN_IN&&resultCode == Activity.RESULT_OK&&data!=null){
+            signInPresenter.respondToActivityResultOfGoogleSignIn(requestCode, resultCode, data);
+        }else{
+            Toast.makeText(LoginScreenController.this, "problem in the intent", Toast.LENGTH_SHORT).show();
         }
-    }
-    private void firebaseAuthWithGoogleAccount(GoogleSignInAccount account) {
-        AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(),null);
-        mAuth.signInWithCredential(authCredential)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        Log.d("TAG", "onSuccess: logged in");
-                        intent = new Intent(LoginScreenController.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Log.d("TAG", "onFailure: fail to access");
-                            if (exception == null) {
-                                Toast.makeText(LoginScreenController.this, "UnExpected error occurred", Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                Toast.makeText(LoginScreenController.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                });
     }
     private void setTv_anonymouslyAction(){
         tv_anonymously.setOnClickListener(new View.OnClickListener() {
@@ -218,9 +154,65 @@ public class LoginScreenController extends AppCompatActivity {
             public void onClick(View v) {
                 intent = new Intent(LoginScreenController.this, MainActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
+    }
+    @Override
+    public void onCompleteSignInWithEmailAndPassword(Task<AuthResult> task) {
+                        progressBar.setVisibility(View.GONE);
+                        if (task.isSuccessful()) {
+                            intent = new Intent(LoginScreenController.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                        else {
+                            Exception exception = task.getException();
+                            if (exception == null) {
+                                Toast.makeText(LoginScreenController.this, "UnExpected error occurred", Toast.LENGTH_SHORT).show();
+                            } else {
+                                if (exception.getClass().equals(FirebaseAuthException.class)) {
+                                    if (((FirebaseAuthException) exception).getErrorCode().equals("ERROR_USER_NOT_FOUND")) {
+                                        Toast.makeText(LoginScreenController.this, "User not found", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(LoginScreenController.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                } else if (exception.getClass().equals(FirebaseNetworkException.class)) {
+                                    Toast.makeText(LoginScreenController.this, "Network error", Toast.LENGTH_SHORT).show();
+                                } else if (task.getException().getMessage().equals("There is no user record corresponding to this identifier. The user may have been deleted.")) {
+                                    Toast.makeText(LoginScreenController.this, "User not found", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(LoginScreenController.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+
+                            }
+                        }
+    }
+
+    @Override
+    public void onCompleteGoogleSignIn(Task<AuthResult> task) {
+        task.addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                Log.d("TAG", "onSuccess: logged in");
+                intent = new Intent(LoginScreenController.this, MainActivity.class);
+                startActivity(intent);
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.d("TAG", "onFailure: fail to access");
+                        if (exception == null) {
+                            Toast.makeText(LoginScreenController.this, "UnExpected error occurred", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            Toast.makeText(LoginScreenController.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+        });
+    }
+    @Override
+    public void onCompleteSignInIntent(Intent signInIntent, int i) {
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 }
 
