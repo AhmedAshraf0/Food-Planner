@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,11 +23,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAdapter.ViewHolder> {
-    private List<FilterMealModel> categoryModel;
+    private List<FilterMealModel> filterMealModel;
+    private TextView categoryTitleOne, categoryTitleTwo;
+    public static String category1 , category2;
     private Context context;
 
     public RandomCategoryAdapter() {
-        categoryModel = new ArrayList<>();
+        filterMealModel = new ArrayList<>();
     }
 
 
@@ -34,12 +38,14 @@ public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAd
         private ImageButton favBtn;
         private TextView mealTitle;
         private Button addBtn;
+        private CardView card;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mealImage = itemView.findViewById(R.id.mealImage);
             favBtn = itemView.findViewById(R.id.buttonF);
             mealTitle = itemView.findViewById(R.id.mealTitle);
             addBtn = itemView.findViewById(R.id.addToScedule);
+            card = itemView.findViewById(R.id.mealCardView);
         }
 
         public ImageView getMealImage() {
@@ -57,6 +63,10 @@ public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAd
         public Button getAddBtn() {
             return addBtn;
         }
+
+        public CardView getCard() {
+            return card;
+        }
     }
 
 
@@ -72,23 +82,34 @@ public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(context).load(categoryModel.get(position).getStrMealThumb()+"/preview")
+        Glide.with(context).load(filterMealModel.get(position).getStrMealThumb()+"/preview")
                 .override(150,150)
                 .into(holder.getMealImage());
-        holder.getMealTitle().setText(categoryModel.get(position).getStrMeal());
+        holder.getMealTitle().setText(filterMealModel.get(position).getStrMeal());
         holder.getAddBtn().setOnClickListener(v -> {
             Log.i("TAG","pressed from seafood--------");
+        });
+        holder.getCard().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("TAG", "onClick: pressed");
+                Navigation.findNavController(v).navigate(R.id.action_homeFragment_to_mealFragment);
+                //1.request to api to get mealdetails
+                //2.navigate to mealScreen
+                //3.send mealDetails there
+            }
         });
     }
 
     @Override
     public int getItemCount() {
-        return categoryModel.size();
+        return filterMealModel.size();
     }
-    public void setCategoryModel(List<FilterMealModel> categoryModel) {
-        if(categoryModel == null){
+    public void setFilterMealModel(List<FilterMealModel> filterMealModel,TextView title ,String categoryName) {
+        if(filterMealModel == null){
             Log.i("TAG", "setCategoryModel: null");
         }
-        this.categoryModel = categoryModel;
+        this.filterMealModel = filterMealModel;
+        title.setText(categoryName);
     }
 }

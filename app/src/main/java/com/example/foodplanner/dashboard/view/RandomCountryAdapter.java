@@ -23,6 +23,7 @@ import java.util.List;
 public class RandomCountryAdapter extends RecyclerView.Adapter<RandomCountryAdapter.ViewHolder> {
     private List<FilterMealModel> filterMealModel;
     private Context context;
+    public static String country1, country2;
 
     public RandomCountryAdapter() {
         filterMealModel = new ArrayList<>();

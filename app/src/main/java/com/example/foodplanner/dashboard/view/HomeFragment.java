@@ -15,26 +15,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.foodplanner.R;
 import com.example.foodplanner.dashboard.presenter.CommunicatorHome;
 import com.example.foodplanner.dashboard.presenter.PresenterHome;
-import com.example.foodplanner.models.CountryData;
 import com.example.foodplanner.network.ClientRetrofit;
 import com.example.foodplanner.network.models.CategoryModel;
 import com.example.foodplanner.network.models.CountryModel;
 import com.example.foodplanner.network.models.FilterMealModel;
 import com.example.foodplanner.network.models.MealModel;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HomeFragment extends Fragment implements CommunicatorHome {
     private static final String TAG = "HomeFragment";
     private PresenterHome presenterHome;
     private ViewPager2 viewPager2;
+    private ScrollView scrollView;
     private RecyclerView  category1Rec , category2Rec , country1Rec , country2Rec , categoriesRec, countriesRec;
     private TextView categoryTitleOne, categoryTitleTwo , countryTitleOne , countryTitleTwo;
     private RandomCategoryAdapter randomCategoryAdapterOne, randomCategoryAdapterTwo;
@@ -45,19 +44,18 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     private List<CategoryModel> allCategories;
     private List<CountryModel> allCountries;
     private List<MealModel> randomMeals;
-    private List<List<FilterMealModel>> categoriesMeals;
     private Handler sliderHandler;
 
     public HomeFragment() {
         // Required empty public constructor
-        sliderHandler = new Handler();
+        presenterHome = new PresenterHome(ClientRetrofit.getInstance() , this);
+        presenterHome.getMeals();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenterHome = new PresenterHome(ClientRetrofit.getInstance() , this);
-        presenterHome.getMeals();
+        sliderHandler = new Handler();
         randomCategoryAdapterOne = new RandomCategoryAdapter();
         randomCategoryAdapterTwo = new RandomCategoryAdapter();
         randomCountryAdapterOne = new RandomCountryAdapter();
@@ -76,6 +74,7 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "onCreate: hi");
         viewPager2 = view.findViewById(R.id.viewPager);
         category1Rec = view.findViewById(R.id.category_one_rec);
         category2Rec = view.findViewById(R.id.category_two_rec);
@@ -87,6 +86,13 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
         categoryTitleTwo = view.findViewById(R.id.category_two);
         countryTitleOne = view.findViewById(R.id.country_one);
         countryTitleTwo = view.findViewById(R.id.country_two);
+        scrollView = view.findViewById(R.id.scrollView);
+        if(RandomCountryAdapter.country1 != null){
+            countryTitleOne.setText(RandomCountryAdapter.country1);
+            countryTitleTwo.setText(RandomCountryAdapter.country2);
+            categoryTitleOne.setText(RandomCategoryAdapter.category1);
+            categoryTitleTwo.setText(RandomCategoryAdapter.category2);
+        }
 
         category1Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
         category2Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
@@ -131,7 +137,7 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
 
         //first category
         presenterHome.getCategory(allCategories.get(randomCategory).getStrCategory(),1);
-        randomCategory = (randomCategory + 1) % (allCategories.size() - 1);
+        randomCategory = (randomCategory + 4) % (allCategories.size() - 1);
         //second category
         presenterHome.getCategory(allCategories.get(randomCategory).getStrCategory(),2);
     }
@@ -149,7 +155,7 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
 
         //first country
         presenterHome.getCountry(allCountries.get(randomCountry).getStrArea(),1);
-        randomCountry = (randomCountry + 1) % (allCountries.size() - 1);
+        randomCountry = (randomCountry + 4) % (allCountries.size() - 1);
         //second country
         presenterHome.getCountry(allCountries.get(randomCountry).getStrArea(),2);
     }
@@ -166,13 +172,13 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
     public void getCategoryMeals(List<FilterMealModel> categoryMeals, String categoryName , int categoryNumber) {
         switch (categoryNumber){
             case 1:
-                categoryTitleOne.setText(categoryName);
-                randomCategoryAdapterOne.setCategoryModel(categoryMeals);
+                randomCategoryAdapterOne.setFilterMealModel(categoryMeals,categoryTitleOne,categoryName);
+                RandomCategoryAdapter.category1 = categoryName;
                 randomCategoryAdapterOne.notifyDataSetChanged();
                 break;
             case 2:
-                categoryTitleTwo.setText(categoryName);
-                randomCategoryAdapterTwo.setCategoryModel(categoryMeals);
+                randomCategoryAdapterTwo.setFilterMealModel(categoryMeals,categoryTitleTwo,categoryName);
+                RandomCategoryAdapter.category2 = categoryName;
                 randomCategoryAdapterTwo.notifyDataSetChanged();
                 break;
             default:
@@ -187,11 +193,13 @@ public class HomeFragment extends Fragment implements CommunicatorHome {
         switch (countryNumber){
             case 1:
                 countryTitleOne.setText(countryName+" food");
+                RandomCountryAdapter.country1 = countryName+" food";
                 randomCountryAdapterOne.setMealsOfCountry(countryMeals);
                 randomCountryAdapterOne.notifyDataSetChanged();
                 break;
             case 2:
                 countryTitleTwo.setText(countryName+" food");
+                RandomCountryAdapter.country2 = countryName+" food";
                 randomCountryAdapterTwo.setMealsOfCountry(countryMeals);
                 randomCountryAdapterTwo.notifyDataSetChanged();
                 break;

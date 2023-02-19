@@ -29,9 +29,6 @@ public class ClientRetrofit implements RemoteDataSource {
     private static ClientRetrofit instance = null;
     //to go here
     private ApiInterface apiInterface;
-    private List<List<FilterMealModel>> twoCategoriesMeals, twoRandomMeals;
-    private List<String> categoryNames, countryNames;
-    private int randomCategory = 0, randomCountry = 0;
 
     private ClientRetrofit() {
         Retrofit retrofit = new Retrofit
@@ -40,10 +37,6 @@ public class ClientRetrofit implements RemoteDataSource {
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
         apiInterface = retrofit.create(ApiInterface.class);
-        twoCategoriesMeals = new ArrayList<>();
-        categoryNames = new ArrayList<>();
-        twoRandomMeals = new ArrayList<>();
-        countryNames = new ArrayList<>();
     }
 
     public static synchronized ClientRetrofit getInstance() {
