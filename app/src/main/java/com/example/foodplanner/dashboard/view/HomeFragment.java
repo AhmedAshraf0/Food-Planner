@@ -1,6 +1,8 @@
 package com.example.foodplanner.dashboard.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -33,7 +35,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements CommunicatorHome  , OnCardClickListener , OnSliderItemClicked , OnCountryButtonClicked {
+public class HomeFragment extends Fragment implements CommunicatorHome  , OnCardClickListener , OnSliderItemClicked , OnCountryButtonClicked  , OnFavoriteClickListener{
     private static final String TAG = "HomeFragment";
     private final int MEALS_LIST = 1 , MEAL = 2;
     private PresenterHome presenterHome;
@@ -52,6 +54,7 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
     private Handler sliderHandler;
     private MealModel mealDetails;
     private int allCountryMeals;
+    private SharedPreferences sh;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -63,8 +66,8 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sliderHandler = new Handler();
-        randomCategoryAdapterOne = new RandomCategoryAdapter(this);
-        randomCategoryAdapterTwo = new RandomCategoryAdapter(this);
+        randomCategoryAdapterOne = new RandomCategoryAdapter(this,this);
+        randomCategoryAdapterTwo = new RandomCategoryAdapter(this,this);
         randomCountryAdapterOne = new RandomCountryAdapter(this);
         randomCountryAdapterTwo = new RandomCountryAdapter(this);
         categoriesAdapter = new CategoriesAdapter();
@@ -176,6 +179,12 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
     @Override
     public void onCountryButtonActor(String strArea) {
         presenterHome.requestCountryMeals(strArea);
+    }
+    @Override
+    public void onFavoriteClicked(String mealId) {
+        sh = getContext().getSharedPreferences("db_sharedPref", Context.MODE_PRIVATE);
+        String userNameEmail = sh.getString("user_email_db","test");
+
     }
 
     @Override
