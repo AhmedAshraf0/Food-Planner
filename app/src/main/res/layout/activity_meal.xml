@@ -11,8 +11,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mealConstraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".meal_screen.MealFragment" >
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/headerImage"
             android:layout_width="match_parent"
@@ -96,21 +95,12 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/ingredients_rec"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="420dp"
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.18"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/IngredientsTitle" />
-
-<!--        <VideoView-->
-<!--            android:id="@+id/video"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="250dp"-->
-<!--            android:layout_marginTop="46dp"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/ingredients_rec"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"/>-->
         <LinearLayout
             android:id="@+id/videoContainer"
             android:layout_marginTop="46dp"

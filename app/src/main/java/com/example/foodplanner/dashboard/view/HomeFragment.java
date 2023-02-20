@@ -1,47 +1,75 @@
 package com.example.foodplanner.dashboard.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.dashboard.presenter.CommunicatorHome;
+import com.example.foodplanner.dashboard.presenter.PresenterHome;
+import com.example.foodplanner.meal_screen.MealActivity;
+import com.example.foodplanner.network.ClientRetrofit;
+import com.example.foodplanner.network.models.CategoryModel;
+import com.example.foodplanner.network.models.CountryModel;
+import com.example.foodplanner.network.models.FilterMealModel;
+import com.example.foodplanner.network.models.MealModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements CommunicatorHome  , OnCardClickListener , OnSliderItemClicked , OnCountryButtonClicked {
+    private static final String TAG = "HomeFragment";
+    private final int MEALS_LIST = 1 , MEAL = 2;
+    private PresenterHome presenterHome;
     private ViewPager2 viewPager2;
-    private RecyclerView recentRec , category1Rec , category2Rec , country1Rec , country2Rec , categoriesRec, countriesRec;
-    private RecentViewAdapter recentViewAdapter;
-    private Category1Adapter category1Adapter;
-    private Category2Adapter category2Adapter;
-    private Country1Adapter country1Adapter;
-    private Country2Adapter country2Adapter;
+    private ScrollView scrollView;
+    private RecyclerView  category1Rec , category2Rec , country1Rec , country2Rec , categoriesRec, countriesRec;
+    private TextView categoryTitleOne, categoryTitleTwo , countryTitleOne , countryTitleTwo;
+    private RandomCategoryAdapter randomCategoryAdapterOne, randomCategoryAdapterTwo;
+    private RandomCountryAdapter randomCountryAdapterOne , randomCountryAdapterTwo;
     private CountriesAdapter countriesAdapter;
     private CategoriesAdapter categoriesAdapter;
-    private List<SliderItem> images;
-    private List<String> meals;
-    private List<Integer> mealsPhotos;
+    private SliderAdapter sliderAdapter;
+    private List<CategoryModel> allCategories;
+    private List<CountryModel> allCountries;
+    private List<MealModel> randomMeals , mealsOfSearchByCountry;
     private Handler sliderHandler;
+    private MealModel mealDetails;
+    private int allCountryMeals;
 
     public HomeFragment() {
         // Required empty public constructor
-        sliderHandler = new Handler();
+        presenterHome = new PresenterHome(ClientRetrofit.getInstance() , this);
+        presenterHome.getMeals();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sliderHandler = new Handler();
+        randomCategoryAdapterOne = new RandomCategoryAdapter(this);
+        randomCategoryAdapterTwo = new RandomCategoryAdapter(this);
+        randomCountryAdapterOne = new RandomCountryAdapter(this);
+        randomCountryAdapterTwo = new RandomCountryAdapter(this);
+        categoriesAdapter = new CategoriesAdapter();
+        countriesAdapter = new CountriesAdapter(this);
+        sliderAdapter = new SliderAdapter(this);
     }
 
     @Override
@@ -53,57 +81,36 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "onCreate: hi");
         viewPager2 = view.findViewById(R.id.viewPager);
-        recentRec = view.findViewById(R.id.recentRec);
         category1Rec = view.findViewById(R.id.category_one_rec);
         category2Rec = view.findViewById(R.id.category_two_rec);
         country1Rec=  view.findViewById(R.id.country_one_rec);
         country2Rec = view.findViewById(R.id.country_two_rec);
         countriesRec = view.findViewById(R.id.countries_rec);
         categoriesRec = view.findViewById(R.id.categories_rec);
-        LinearLayoutManager llMgrRecent , llMgrCat1 , llMgrCat2 , llMgrCount1 , llMgrCount2 , llMgrCats , llMgrCounts;
-        llMgrRecent= new LinearLayoutManager(view.getContext());
-        llMgrCat1 = new LinearLayoutManager(view.getContext());
-        llMgrCat2 = new LinearLayoutManager(view.getContext());
-        llMgrCount1 = new LinearLayoutManager(view.getContext());
-        llMgrCount2 = new LinearLayoutManager(view.getContext());
-        llMgrCats = new LinearLayoutManager(view.getContext());
-        llMgrCounts = new LinearLayoutManager(view.getContext());
-        llMgrCat1.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrCat2.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrRecent.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrCount1.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrCount2.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrCounts.setOrientation(RecyclerView.HORIZONTAL);
-        llMgrCats.setOrientation(RecyclerView.HORIZONTAL);
-        recentRec.setLayoutManager(llMgrRecent);
-        category1Rec.setLayoutManager(llMgrCat1);
-        category2Rec.setLayoutManager(llMgrCat2);
-        country1Rec.setLayoutManager(llMgrCount1);
-        country2Rec.setLayoutManager(llMgrCount2);
-        countriesRec.setLayoutManager(llMgrCounts);
-        categoriesRec.setLayoutManager(llMgrCats);
+        categoryTitleOne = view.findViewById(R.id.category_one);
+        categoryTitleTwo = view.findViewById(R.id.category_two);
+        countryTitleOne = view.findViewById(R.id.country_one);
+        countryTitleTwo = view.findViewById(R.id.country_two);
+        scrollView = view.findViewById(R.id.scrollView);
 
-        images = new ArrayList<>();
-        meals =new ArrayList<>();
-        mealsPhotos =new ArrayList<>();
-        meals.add("first meal");
-        meals.add("second meal");
-        meals.add("third meal");
-        meals.add("forth meal");
-        meals.add("fifth meal");
-        mealsPhotos.add(R.mipmap.image1);
-        mealsPhotos.add(R.mipmap.image2);
-        mealsPhotos.add(R.mipmap.image3);
-        mealsPhotos.add(R.mipmap.image4);
-        mealsPhotos.add(R.mipmap.image5);
+        //to save titles in there state
+        if(RandomCountryAdapter.country1 != null){
+            countryTitleOne.setText(RandomCountryAdapter.country1);
+            countryTitleTwo.setText(RandomCountryAdapter.country2);
+            categoryTitleOne.setText(RandomCategoryAdapter.category1);
+            categoryTitleTwo.setText(RandomCategoryAdapter.category2);
+        }
 
-        images.add(new SliderItem(R.mipmap.image1,"first meal"));
-        images.add(new SliderItem(R.mipmap.image2,"second meal"));
-        images.add(new SliderItem(R.mipmap.image3,"third meal"));
-        images.add(new SliderItem(R.mipmap.image4,"forth meal"));
-        images.add(new SliderItem(R.mipmap.image5,"fifth meal"));
-        viewPager2.setAdapter(new SliderAdapter(images));
+        category1Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        category2Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        country1Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        country2Rec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        categoriesRec.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+        countriesRec.setLayoutManager(new GridLayoutManager(view.getContext(),3));
+
+        viewPager2.setAdapter(sliderAdapter);
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
         viewPager2.setOffscreenPageLimit(2);
@@ -117,19 +124,157 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        recentViewAdapter = new RecentViewAdapter(meals,mealsPhotos,getFragmentManager());
-        recentRec.setAdapter(recentViewAdapter);
-        category1Adapter = new Category1Adapter(meals,mealsPhotos);
-        category1Rec.setAdapter(category1Adapter);
-        category2Adapter = new Category2Adapter(meals,mealsPhotos);
-        category2Rec.setAdapter(category2Adapter);
-        country1Adapter = new Country1Adapter(meals,mealsPhotos);
-        country1Rec.setAdapter(country1Adapter);
-        country2Adapter = new Country2Adapter(meals,mealsPhotos);
-        country2Rec.setAdapter(country2Adapter);
-        countriesAdapter = new CountriesAdapter(meals,mealsPhotos);
-        countriesRec.setAdapter(countriesAdapter);
-        categoriesAdapter = new CategoriesAdapter(meals,mealsPhotos);
+        category1Rec.setAdapter(randomCategoryAdapterOne);
+        category2Rec.setAdapter(randomCategoryAdapterTwo);
+        country1Rec.setAdapter(randomCountryAdapterOne);
+        country2Rec.setAdapter(randomCountryAdapterTwo);
         categoriesRec.setAdapter(categoriesAdapter);
+        countriesRec.setAdapter(countriesAdapter);
+    }
+
+    @Override
+    public void getCategoryResponse(List<CategoryModel> allCategories) {
+        //haaaaa7777
+        this.allCategories = allCategories;
+        categoriesAdapter.setCategories(allCategories);
+        categoriesAdapter.notifyDataSetChanged();
+
+        //get 2 random meals of categories
+        //calc randomNumber->send categoryName
+        int randomCategory = (int) (Math.random() * (allCategories.size() - 1));
+        randomCategory %= (allCategories.size() - 1);//not out of bounds
+
+        //first category
+        presenterHome.getCategory(allCategories.get(randomCategory).getStrCategory(),1);
+        randomCategory = (randomCategory + 4) % (allCategories.size() - 1);
+        //second category
+        presenterHome.getCategory(allCategories.get(randomCategory).getStrCategory(),2);
+    }
+
+    @Override
+    public void getCountryResponse(List<CountryModel> allCountries) {
+        this.allCountries = allCountries;
+        countriesAdapter.setCountries(allCountries);
+        countriesAdapter.notifyDataSetChanged();
+
+        //get 2 random meals of countries
+        //calc randomNumber->send countryName
+        int randomCountry = (int) (Math.random() * (allCountries.size() - 1));
+        randomCountry %= (allCountries.size() - 1);//not out of bounds
+
+        //first country
+        presenterHome.getCountry(allCountries.get(randomCountry).getStrArea(),1);
+        randomCountry = (randomCountry + 4) % (allCountries.size() - 1);
+        //second country
+        presenterHome.getCountry(allCountries.get(randomCountry).getStrArea(),2);
+    }
+
+    @Override
+    public void onCardClickActor(int mealId) {
+        presenterHome.requestMealDetails(mealId,MEAL);
+    }
+    @Override
+    public void onCountryButtonActor(String strArea) {
+        presenterHome.requestCountryMeals(strArea);
+    }
+
+    @Override
+    public void getRandomMealsResponse(List<MealModel> randomMeals) {
+        this.randomMeals = randomMeals;
+        Log.i(TAG, "random meals: "+randomMeals.size());
+        sliderAdapter.setRandomModel(randomMeals.subList(0,5));
+        sliderAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getCategoryMeals(List<FilterMealModel> categoryMeals, String categoryName , int categoryNumber) {
+        switch (categoryNumber){
+            case 1:
+                randomCategoryAdapterOne.setFilterMealModel(categoryMeals,categoryTitleOne,categoryName);
+                RandomCategoryAdapter.category1 = categoryName;
+                randomCategoryAdapterOne.notifyDataSetChanged();
+                break;
+            case 2:
+                randomCategoryAdapterTwo.setFilterMealModel(categoryMeals,categoryTitleTwo,categoryName);
+                RandomCategoryAdapter.category2 = categoryName;
+                randomCategoryAdapterTwo.notifyDataSetChanged();
+                break;
+            default:
+                Log.i(TAG, "getCategoryMeals: error");
+                break;
+        }
+    }
+
+    @Override
+    public void getCountryMeals(List<FilterMealModel> countryMeals, String countryName, int countryNumber) {
+        Log.i(TAG, "getCountryMeals: here");
+        switch (countryNumber){
+            case 1:
+                countryTitleOne.setText(countryName+" food");
+                RandomCountryAdapter.country1 = countryName+" food";
+                randomCountryAdapterOne.setMealsOfCountry(countryMeals);
+                randomCountryAdapterOne.notifyDataSetChanged();
+                break;
+            case 2:
+                countryTitleTwo.setText(countryName+" food");
+                RandomCountryAdapter.country2 = countryName+" food";
+                randomCountryAdapterTwo.setMealsOfCountry(countryMeals);
+                randomCountryAdapterTwo.notifyDataSetChanged();
+                break;
+            default:
+                Log.i(TAG, "getCountryMeals: error");
+                break;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(TAG, "onSaveInstanceState: ");
+        outState.putSerializable("mealData",mealDetails);
+    }
+
+    @Override
+    public void getMealDetails(MealModel mealDetails , int type) {
+        switch (type){
+            case MEAL:
+                Log.i(TAG, "getMealDetails: "+mealDetails.getStrCategory());
+                this.mealDetails = mealDetails;
+                Intent i = new Intent(this.requireContext(), MealActivity.class);
+                i.putExtra("meal",mealDetails);
+                startActivity(i);
+                break;
+            case MEALS_LIST:
+                //allcountrymeals is size of meals received from api and mealsofcountry the list that hold my data
+                mealsOfSearchByCountry.add(mealDetails);
+                if(allCountryMeals == mealsOfSearchByCountry.size()){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("mealsList", (Serializable) mealsOfSearchByCountry);
+                    Intent intent = new Intent(this.requireContext(), CountryMealsActivity.class);
+                    intent.putExtra("mealsBundle", bundle);
+                    Log.i(TAG, "getMealDetails: hi");
+                    startActivity(intent);
+                }
+                break;
+            default:
+                Log.i(TAG, "getMealDetails: error");
+                break;
+        }
+    }
+
+    @Override
+    public void getCountryAllMeals(List<FilterMealModel> countryMeals) {
+        mealsOfSearchByCountry = new ArrayList<>();
+        allCountryMeals = countryMeals.size();
+        Log.i(TAG, "getCountryAllMeals: "+countryMeals.size());
+        for (FilterMealModel countryMeal : countryMeals)
+            presenterHome.requestMealDetails(Integer.parseInt(countryMeal.getIdMeal()),MEALS_LIST);
+    }
+
+    @Override
+    public void sliderItemClicked(MealModel meal) {
+        Intent i = new Intent(this.requireContext(), MealActivity.class);
+        i.putExtra("meal",meal);
+        startActivity(i);
     }
 }

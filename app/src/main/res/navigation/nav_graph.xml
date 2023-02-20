@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.foodplanner.main_activity.view.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.foodplanner.dashboard.view.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home"/>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.foodplanner.favorites.FavoriteFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorite" />
+    <fragment
+        android:id="@+id/plannerFragment"
+        android:name="com.example.foodplanner.planner.PlannerFragment"
+        android:label="Planner"
+        tools:layout="@layout/fragment_planner" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.foodplanner.search.SearchFragment"
+        android:label="Search"
+        tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="com.example.foodplanner.setting.SettingFragment"
+        android:label="setting"
+        tools:layout="@layout/fragment_setting" />
+    <activity
+        android:id="@+id/mealActivity"
+        android:name="com.example.foodplanner.meal_screen.MealActivity"
+        android:label="MealActivity" />
+</navigation>

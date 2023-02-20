@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="20dp"
     android:layout_marginEnd="20dp"
@@ -11,17 +11,17 @@
     android:elevation="30dp"
     app:cardBackgroundColor="#00FFFFFF"
     app:cardCornerRadius="20dp"
-    android:id="@+id/mealCardView">
+    android:id="@+id/meal_of_country_CardView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/mealImage"
-            android:layout_width="250dp"
+            android:id="@+id/meal_of_country_Image"
+            android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="fitXY"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
@@ -40,11 +40,11 @@
             android:textColor="@color/white"
             app:cardCornerRadius="30dp"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@+id/mealImage"
+            app:layout_constraintEnd_toEndOf="@+id/meal_of_country_Image"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/mealTitle"
+            android:id="@+id/meal_of_country_Title"
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_marginStart="8dp"
@@ -56,12 +56,12 @@
             android:textColor="#131414"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@+id/mealImage"
-            app:layout_constraintStart_toStartOf="@+id/mealImage"
-            app:layout_constraintTop_toBottomOf="@+id/mealImage" />
+            app:layout_constraintEnd_toEndOf="@+id/meal_of_country_Image"
+            app:layout_constraintStart_toStartOf="@+id/meal_of_country_Image"
+            app:layout_constraintTop_toBottomOf="@+id/meal_of_country_Image" />
 
         <Button
-            android:id="@+id/addToScedule"
+            android:id="@+id/meal_of_country_Button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -72,9 +72,9 @@
             android:text="@string/addToSchedule"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/mealImage"
+            app:layout_constraintEnd_toEndOf="@+id/meal_of_country_Image"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mealTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/meal_of_country_Title" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

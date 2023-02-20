@@ -19,7 +19,8 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:elevation="8dp"
-            app:cardCornerRadius="18dp">
+            app:cardCornerRadius="18dp"
+            android:id="@+id/sliderCard">
 
 
             <RelativeLayout
@@ -35,17 +36,19 @@
 
 
                 <TextView
+                    android:id="@+id/tvHeading"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tvHeading"
                     android:layout_below="@id/imageView"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="16dp"
-                    android:text="Baked"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:textColor="@color/black"
                     android:textSize="26sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:layout_centerHorizontal="true"/>
 
 
             </RelativeLayout>

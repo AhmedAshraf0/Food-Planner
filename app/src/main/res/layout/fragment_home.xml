@@ -40,11 +40,10 @@
         </androidx.viewpager2.widget.ViewPager2>
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/category_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:text="@string/recently"
+            android:layout_marginTop="34dp"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -54,25 +53,10 @@
             app:layout_constraintTop_toBottomOf="@+id/viewPager" />
 
         <TextView
-            android:id="@+id/category_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
-            android:text="@string/category_one"
-            android:textColor="@color/black"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.13"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recentRec" />
-
-        <TextView
             android:id="@+id/category_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="34dp"
-            android:text="@string/category_two"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -86,7 +70,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="34dp"
-            android:text="@string/country_one"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -100,7 +83,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="34dp"
-            android:text="@string/country_two"
             android:textColor="@color/black"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -175,30 +157,6 @@
             app:layout_constraintTop_toBottomOf="@+id/country_one_rec" />
 
         <TextView
-            android:id="@+id/seeAllTv6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintHorizontal_bias="1.0"
-            android:text="@string/seeAll"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/categories"
-            app:layout_constraintTop_toBottomOf="@+id/country_two_rec" />
-
-        <TextView
-            android:id="@+id/seeAllTv7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="32dp"
-            app:layout_constraintHorizontal_bias="1.0"
-            android:text="@string/seeAll"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/countries"
-            app:layout_constraintTop_toBottomOf="@+id/categories_rec" />
-
-        <TextView
             android:id="@+id/seeAllTv3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -208,19 +166,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/category_one"
-            app:layout_constraintTop_toBottomOf="@+id/recentRec" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recentRec"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.18"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4">
-
-        </androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@+id/viewPager" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/category_one_rec"
