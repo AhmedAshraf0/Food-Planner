@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -93,6 +94,11 @@ public class SignUp extends AppCompatActivity implements SignUpInterface {
                     }
                     else{
                         signUpPresenter.createUserWithEmailAndPassword(email,password);
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("db_sharedPref",MODE_PRIVATE);
+                        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                        myEdit.putString("user_email_db", email);
+                        myEdit.commit();
                     }
                 }
                 else{

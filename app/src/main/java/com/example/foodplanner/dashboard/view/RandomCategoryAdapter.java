@@ -2,6 +2,7 @@ package com.example.foodplanner.dashboard.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,14 +25,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAdapter.ViewHolder> {
+    private static final String TAG = "RandomCategoryAdapter ";
     private OnCardClickListener onCardClickListener;
+    private OnFavoriteClickListener onFavoriteClickListener;
     private List<FilterMealModel> filterMealModel;
     public static String category1 , category2;
     private Context context;
 
-    public RandomCategoryAdapter(OnCardClickListener onCardClickListener) {
+    public RandomCategoryAdapter(OnCardClickListener onCardClickListener , OnFavoriteClickListener onFavoriteClickListener) {
         filterMealModel = new ArrayList<>();
         this.onCardClickListener = onCardClickListener;
+        this.onFavoriteClickListener = onFavoriteClickListener;
     }
 
 
@@ -94,6 +98,9 @@ public class RandomCategoryAdapter extends RecyclerView.Adapter<RandomCategoryAd
         holder.getCard().setOnClickListener(v -> {
             Log.i("TAG", "onClick: pressed");
             onCardClickListener.onCardClickActor(Integer.parseInt(filterMealModel.get(position).getIdMeal()));
+        });
+        holder.getFavBtn().setOnClickListener(v->{
+            onFavoriteClickListener.onFavoriteClicked(filterMealModel.get(position).getIdMeal());
         });
     }
 
