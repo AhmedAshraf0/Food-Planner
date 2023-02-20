@@ -38,4 +38,5 @@
     <string name="tv_signIn_register"><u>Sign In</u>.</string>
     <string name="sign_anontmously">"Or you can sign "</string>
     <string name="anonymously"><u>Anonymously</u>.</string>
+    <string name="logout">Logout</string>
 </resources>
