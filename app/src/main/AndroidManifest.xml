@@ -26,14 +26,27 @@
             android:name=".LoginScreenController"
             android:exported="false" />
         <activity
-            android:name=".main_activity.view.MainActivity"
-            android:exported="true">
+            android:name=".splashScreen.view.SplashScreen"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".landingPage.view.LandingPage"
+            android:exported="false"/>
+
+        <activity
+            android:name=".sign_up.view.SignUp"
+            android:exported="false" />
+        <activity
+            android:name=".login_screen.view.LoginScreenController"
+            android:exported="false" />
+        <activity
+            android:name=".main_activity.view.MainActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
