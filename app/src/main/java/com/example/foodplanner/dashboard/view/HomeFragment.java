@@ -94,6 +94,8 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
         countryTitleOne = view.findViewById(R.id.country_one);
         countryTitleTwo = view.findViewById(R.id.country_two);
         scrollView = view.findViewById(R.id.scrollView);
+
+        //to save titles in there state
         if(RandomCountryAdapter.country1 != null){
             countryTitleOne.setText(RandomCountryAdapter.country1);
             countryTitleTwo.setText(RandomCountryAdapter.country2);
