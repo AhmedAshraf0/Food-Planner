@@ -36,6 +36,9 @@ public class PresenterHome implements NetworkDeligate{
      public void requestCountryMeals(String strArea){
         remoteDataSource.requestCountryMeals(this,strArea);
      }
+     public void requestCategoryMeals(String strCategory){
+        remoteDataSource.requestCategoryMeals(this,strCategory);
+     }
 
     @Override
     public void setCategoryResponse(List<CategoryModel> allCategories) {
@@ -71,6 +74,11 @@ public class PresenterHome implements NetworkDeligate{
     @Override
     public void setCountryAllMeals(List<FilterMealModel> categoryMeals) {
         communicatorHome.getCountryAllMeals(categoryMeals);
+    }
+
+    @Override
+    public void setCategorySearchMeals(List<FilterMealModel> categoryMeals) {
+        communicatorHome.getCategorySearchMeals(categoryMeals);
     }
 
 }

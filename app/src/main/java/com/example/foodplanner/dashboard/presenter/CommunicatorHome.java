@@ -15,4 +15,5 @@ public interface CommunicatorHome {
     void getCountryMeals(List<FilterMealModel> countryMeals , String countryName , int countryNumber);
     void getMealDetails(MealModel mealDetails , int type);
     void getCountryAllMeals(List<FilterMealModel> countryMeals);
+    void getCategorySearchMeals(List<FilterMealModel> categoryMeals);
 }

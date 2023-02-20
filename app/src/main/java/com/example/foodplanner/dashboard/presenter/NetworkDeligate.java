@@ -16,4 +16,5 @@ public interface NetworkDeligate {
     void setCountryMeals(List<FilterMealModel> countryMeals , String countryName , int countryNumber);
     void setMealDetails(MealModel mealDetails , int type);
     void setCountryAllMeals(List<FilterMealModel> categoryMeals);
+    void setCategorySearchMeals(List<FilterMealModel> categoryMeals);
 }

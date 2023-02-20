@@ -33,9 +33,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements CommunicatorHome  , OnCardClickListener , OnSliderItemClicked , OnCountryButtonClicked {
+public class HomeFragment extends Fragment implements CommunicatorHome  , OnCardClickListener , OnSliderItemClicked , OnCountryButtonClicked , OnCategoryCardListener{
     private static final String TAG = "HomeFragment";
-    private final int MEALS_LIST = 1 , MEAL = 2;
+    private final int COUNTRY_LIST = 1 , MEAL = 2 , CATEGORY_LIST = 3;
     private PresenterHome presenterHome;
     private ViewPager2 viewPager2;
     private ScrollView scrollView;
@@ -48,10 +48,10 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
     private SliderAdapter sliderAdapter;
     private List<CategoryModel> allCategories;
     private List<CountryModel> allCountries;
-    private List<MealModel> randomMeals , mealsOfSearchByCountry;
+    private List<MealModel> randomMeals , mealsOfSearchByCountry , mealsOfSearchByCategory;
     private Handler sliderHandler;
     private MealModel mealDetails;
-    private int allCountryMeals;
+    private int allCountryMeals , allCategoryMeals;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
         randomCategoryAdapterTwo = new RandomCategoryAdapter(this);
         randomCountryAdapterOne = new RandomCountryAdapter(this);
         randomCountryAdapterTwo = new RandomCountryAdapter(this);
-        categoriesAdapter = new CategoriesAdapter();
+        categoriesAdapter = new CategoriesAdapter(this);
         countriesAdapter = new CountriesAdapter(this);
         sliderAdapter = new SliderAdapter(this);
     }
@@ -177,6 +177,10 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
     public void onCountryButtonActor(String strArea) {
         presenterHome.requestCountryMeals(strArea);
     }
+    @Override
+    public void onCategoryCardListener(String strCategory) {
+        presenterHome.requestCategoryMeals(strCategory);
+    }
 
     @Override
     public void getRandomMealsResponse(List<MealModel> randomMeals) {
@@ -244,7 +248,7 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
                 i.putExtra("meal",mealDetails);
                 startActivity(i);
                 break;
-            case MEALS_LIST:
+            case COUNTRY_LIST:
                 //allcountrymeals is size of meals received from api and mealsofcountry the list that hold my data
                 mealsOfSearchByCountry.add(mealDetails);
                 if(allCountryMeals == mealsOfSearchByCountry.size()){
@@ -253,6 +257,17 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
                     Intent intent = new Intent(this.requireContext(), CountryMealsActivity.class);
                     intent.putExtra("mealsBundle", bundle);
                     Log.i(TAG, "getMealDetails: hi");
+                    startActivity(intent);
+                }
+                break;
+            case CATEGORY_LIST:
+                mealsOfSearchByCategory.add(mealDetails);
+                if(allCategoryMeals == mealsOfSearchByCategory.size()){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("categoriesList", (Serializable) mealsOfSearchByCategory);
+                    Intent intent = new Intent(this.requireContext(), CategoryMealsActivity.class);
+                    intent.putExtra("categoriesBundle", bundle);
+                    Log.i(TAG, "getMealDetails: hi2");
                     startActivity(intent);
                 }
                 break;
@@ -268,7 +283,16 @@ public class HomeFragment extends Fragment implements CommunicatorHome  , OnCard
         allCountryMeals = countryMeals.size();
         Log.i(TAG, "getCountryAllMeals: "+countryMeals.size());
         for (FilterMealModel countryMeal : countryMeals)
-            presenterHome.requestMealDetails(Integer.parseInt(countryMeal.getIdMeal()),MEALS_LIST);
+            presenterHome.requestMealDetails(Integer.parseInt(countryMeal.getIdMeal()), COUNTRY_LIST);
+    }
+
+    @Override
+    public void getCategorySearchMeals(List<FilterMealModel> categoryMeals) {
+        mealsOfSearchByCategory = new ArrayList<>();
+        allCategoryMeals = categoryMeals.size();
+        Log.i(TAG, "getCategorySearchMeals: "+categoryMeals.size());
+        for (FilterMealModel categoryMeal : categoryMeals)
+            presenterHome.requestMealDetails(Integer.parseInt(categoryMeal.getIdMeal()), CATEGORY_LIST);
     }
 
     @Override

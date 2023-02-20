@@ -11,4 +11,5 @@ public interface RemoteDataSource {
                                int countryNumber);
     void requestMealDetails(NetworkDeligate networkDeligate , int mealId , int type);
     void requestCountryMeals(NetworkDeligate networkDeligate , String strArea);
+    void requestCategoryMeals(NetworkDeligate networkDeligate , String strCategory);
 }
