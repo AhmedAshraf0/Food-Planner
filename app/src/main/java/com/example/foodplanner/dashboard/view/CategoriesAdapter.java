@@ -1,16 +1,13 @@
 package com.example.foodplanner.dashboard.view;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodplanner.R;
@@ -20,20 +17,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.ViewHolder> {
+    private OnCategoryCardListener onCategoryCardListener;
     private List<CategoryModel> categories;
-    public CategoriesAdapter() {
+    public CategoriesAdapter(OnCategoryCardListener onCategoryCardListener) {
         categories = new ArrayList<>();
+        this.onCategoryCardListener = onCategoryCardListener;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
         private TextView categoryTitle;
+        private CardView cardView;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             categoryTitle = itemView.findViewById(R.id.category_name);
+            cardView = itemView.findViewById(R.id.category_card);
         }
 
-        public TextView getMealTitle() {
+        public TextView getCategoryTitle() {
             return categoryTitle;
+        }
+
+        public CardView getCardView() {
+            return cardView;
         }
     }
 
@@ -49,9 +54,13 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getMealTitle().setText(categories.get(position).getStrCategory());
-        holder.getMealTitle().setOnClickListener(v -> {
+        holder.getCategoryTitle().setText(categories.get(position).getStrCategory());
+        holder.getCategoryTitle().setOnClickListener(v -> {
             Log.i("TAG","pressed from Breakfast--------");
+            onCategoryCardListener.onCategoryCardListener(categories.get(position).getStrCategory());
+        });
+        holder.getCardView().setOnClickListener(v->{
+            Log.i("TAG", "onBindViewHolder: test");
         });
     }
 

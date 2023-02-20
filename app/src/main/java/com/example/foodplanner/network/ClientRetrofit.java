@@ -164,4 +164,20 @@ public class ClientRetrofit implements RemoteDataSource {
                 e-> Log.i(TAG, "callApi: E-requestCountryMeals: ")
         );
     }
+
+    @Override
+    public void requestCategoryMeals(NetworkDeligate networkDeligate, String strCategory) {
+        Single<List<FilterMealModel>> observable = apiInterface
+                .getMealsOfCategory(strCategory)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(i->i.getMeals());
+        observable.subscribe(
+                filterMealModels -> {
+                    Log.i(TAG, "callApi: S-requestCategoryMeals: ");
+                    networkDeligate.setCategorySearchMeals(filterMealModels);
+                },
+                e-> Log.i(TAG, "callApi: E-requestCategoryMeals: ")
+        );
+    }
 }

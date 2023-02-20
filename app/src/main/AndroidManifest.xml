@@ -14,6 +14,9 @@
         android:theme="@style/Theme.FoodPlanner"
         tools:targetApi="31">
         <activity
+            android:name=".dashboard.view.CategoryMealsActivity"
+            android:exported="false" />
+        <activity
             android:name=".dashboard.view.CountryMealsActivity"
             android:exported="false" />
         <activity
@@ -27,7 +30,7 @@
             android:exported="false" />
         <activity
             android:name=".splashScreen.view.SplashScreen"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,7 +39,7 @@
         </activity>
         <activity
             android:name=".landingPage.view.LandingPage"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".main_activity.view.MainActivity"
             android:exported="false" />
