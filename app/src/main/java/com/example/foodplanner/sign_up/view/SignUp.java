@@ -84,6 +84,7 @@ public class SignUp extends AppCompatActivity implements SignUpInterface {
                     }
                     else if (password.length() <8){
                         // If sign in fails, display a message to the user.
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(SignUp.this, "weak password,it should contains at least eight character.",
                                 Toast.LENGTH_LONG).show();
                     }

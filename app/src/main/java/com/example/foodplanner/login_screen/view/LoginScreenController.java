@@ -45,7 +45,7 @@ public class LoginScreenController extends AppCompatActivity implements SignInIn
     private TextInputEditText et_email;
     private TextInputEditText et_password;
     private Button btnSignIn,btnGoogleSignIn;
-    private FirebaseAuth mAuth;
+    public static FirebaseAuth mAuth;
     private CheckConnection checkConnection;
     private ProgressBar progressBar;
     private TextView tv_signUp;
@@ -55,8 +55,8 @@ public class LoginScreenController extends AppCompatActivity implements SignInIn
     private GoogleSignInClient googleSignInClient;
     private SignInPresenter signInPresenter ;
     TextView tv_anonymously;
-    SharedPreferences pref;
-    SharedPreferences.Editor editor;
+    public static SharedPreferences pref;
+    public static SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

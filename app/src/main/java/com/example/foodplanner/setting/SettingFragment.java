@@ -1,14 +1,20 @@
 package com.example.foodplanner.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.foodplanner.R;
+import com.example.foodplanner.login_screen.view.LoginScreenController;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +31,7 @@ public class SettingFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private Button logout;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -55,6 +62,24 @@ public class SettingFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        logout = view.findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginScreenController.editor.putBoolean("isSignedIn",false);
+                LoginScreenController.editor.commit();
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getContext(),LoginScreenController.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
     }
 
     @Override
