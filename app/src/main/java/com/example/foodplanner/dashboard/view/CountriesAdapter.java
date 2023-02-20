@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,27 +22,30 @@ import java.util.List;
 import java.util.Map;
 
 public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.ViewHolder> {
+    private static final String TAG = "CountriesAdapter";
+    private OnCountryButtonClicked onCountryButtonClicked;
     private List<CountryModel> countries;
     private CountryData countryData;
     private Context context;
     private Map<String,String> countryNames , countryImgs;
 
-    public CountriesAdapter() {
+    public CountriesAdapter(OnCountryButtonClicked onCountryButtonClicked) {
         countries = new ArrayList<>();
         countryData = new CountryData();
         countryNames = countryData.getCountryNames();
         countryImgs = countryData.getImgLinks();
+        this.onCountryButtonClicked = onCountryButtonClicked;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView countryImage;
         private TextView countryTitle;
-        private Button showMeals;
+        private Button mealsButton;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             countryImage = itemView.findViewById(R.id.countryImage);
             countryTitle = itemView.findViewById(R.id.countryTitle);
-            showMeals = itemView.findViewById(R.id.showMealsBtn);
+            mealsButton = itemView.findViewById(R.id.showMealsBtn);
         }
 
         public ImageView getMealImage() {
@@ -53,8 +55,8 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.View
             return countryTitle;
         }
 
-        public Button getAddBtn() {
-            return showMeals;
+        public Button getMealsButton() {
+            return mealsButton;
         }
     }
 
@@ -76,8 +78,9 @@ public class CountriesAdapter extends RecyclerView.Adapter<CountriesAdapter.View
         Glide.with(context).load(countryImgs.get(countryName))
                 .error(R.mipmap.hr)
                 .into(holder.getMealImage());
-        holder.getAddBtn().setOnClickListener(v -> {
+        holder.getMealsButton().setOnClickListener(v -> {
             Log.i("TAG","pressed from Breakfast--------");
+            onCountryButtonClicked.onCountryButtonActor(countries.get(position).getStrArea());
         });
     }
 

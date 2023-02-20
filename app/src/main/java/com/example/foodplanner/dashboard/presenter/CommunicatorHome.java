@@ -13,5 +13,6 @@ public interface CommunicatorHome {
     void getRandomMealsResponse(List<MealModel> randomMeals);
     void getCategoryMeals(List<FilterMealModel> categoryMeals , String categoryName , int categoryNumber);
     void getCountryMeals(List<FilterMealModel> countryMeals , String countryName , int countryNumber);
-    void getMealDetails(MealModel mealDetails);
+    void getMealDetails(MealModel mealDetails , int type);
+    void getCountryAllMeals(List<FilterMealModel> countryMeals);
 }

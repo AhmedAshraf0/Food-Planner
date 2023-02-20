@@ -28,13 +28,12 @@ public class MealActivity extends AppCompatActivity {
     private List<String> listMeasures, listIngredients;
     private TextView mealMainTitle, mealInstructions;
     private ImageView headerImage;
-    MealModel meal;
+    private MealModel meal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal);
-        String strIngredient = "strIngredient0", strMeasure = "strMeasure0";
         listMeasures = new ArrayList<>();
         listIngredients = new ArrayList<>();
 

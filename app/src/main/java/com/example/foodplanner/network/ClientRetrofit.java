@@ -9,6 +9,7 @@ import com.example.foodplanner.dashboard.presenter.NetworkDeligate;
 import com.example.foodplanner.network.models.CategoryModel;
 import com.example.foodplanner.network.models.CountryModel;
 import com.example.foodplanner.network.models.FilterMealModel;
+import com.example.foodplanner.network.models.GenericFilterModel;
 import com.example.foodplanner.network.models.MealModel;
 import com.example.foodplanner.network.models.SearchModel;
 
@@ -133,7 +134,7 @@ public class ClientRetrofit implements RemoteDataSource {
     }
 
     @Override
-    public void requestMealDetails(NetworkDeligate networkDeligate , int mealId) {
+    public void requestMealDetails(NetworkDeligate networkDeligate , int mealId , int type) {
         Single<List<MealModel>> observable = apiInterface
                 .getMealById(mealId)
                 .subscribeOn(Schedulers.io())
@@ -142,9 +143,25 @@ public class ClientRetrofit implements RemoteDataSource {
         observable.subscribe(
                 mealModels -> {
                     Log.i(TAG, "callApi: S-requestMealDetails() "+mealModels.get(0).getStrMeal());
-                    networkDeligate.setMealDetails(mealModels.get(0));
+                    networkDeligate.setMealDetails(mealModels.get(0),type);
                 },
                 e-> Log.i(TAG, "callApi: E-requestMealDetails(): "+e.getMessage())
+        );
+    }
+
+    @Override
+    public void requestCountryMeals(NetworkDeligate networkDeligate, String strArea) {
+        Single<List<FilterMealModel>> observable = apiInterface
+                .getMealsOfCountry(strArea)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(i->i.getMeals());
+        observable.subscribe(
+                filterMealModels -> {
+                    Log.i(TAG, "callApi: S-requestCountryMeals: ");
+                    networkDeligate.setCountryAllMeals(filterMealModels);
+                },
+                e-> Log.i(TAG, "callApi: E-requestCountryMeals: ")
         );
     }
 }
