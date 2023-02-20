@@ -20,10 +20,10 @@
             android:name=".meal_screen.MealActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUp"
+            android:name=".sign_up.view.SignUp"
             android:exported="false" />
         <activity
-            android:name=".LoginScreenController"
+            android:name=".login_screen.view.LoginScreenController"
             android:exported="false" />
         <activity
             android:name=".splashScreen.view.SplashScreen"
@@ -37,13 +37,6 @@
         <activity
             android:name=".landingPage.view.LandingPage"
             android:exported="false"/>
-
-        <activity
-            android:name=".sign_up.view.SignUp"
-            android:exported="false" />
-        <activity
-            android:name=".login_screen.view.LoginScreenController"
-            android:exported="false" />
         <activity
             android:name=".main_activity.view.MainActivity"
             android:exported="false" />
